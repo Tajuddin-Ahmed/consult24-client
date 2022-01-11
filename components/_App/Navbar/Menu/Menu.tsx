@@ -1,6 +1,7 @@
 import Link from "../../../../utils/ActiveLink";
 import React from "react";
 import { menuItems } from "../../../../utils/menu-items";
+import styles from './Menu.module.css'
 
 export default function Menu() {
   return (

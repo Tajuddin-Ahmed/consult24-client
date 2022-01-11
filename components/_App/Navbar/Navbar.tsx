@@ -76,16 +76,15 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-
-        <div className={showMenu ? "miran-nav show" : "miran-nav"}>
+         <div className={showMenu ? "miran-nav show" : "miran-nav"}>
           <div className="container-fluid">
-            <nav className="navbar navbar-expand-md navbar-light">
+            <nav className="navbar navbar-expand-md d-flex justify-content-end  navbar-light">
               <Link href="/">
                 <a className="navbar-brand">
                   <img src="/images/black-logo.png" alt="logo" />
                 </a>
               </Link>
-              <div className="collapse navbar-collapse mean-menu">
+              <div className="collapse d-flex justify-content-end  navbar-collapse mean-menu">
                 {/* Menu Items rendering from JSON object */}
                 <Menu></Menu>
 
@@ -113,8 +112,9 @@ const Navbar = () => {
                 </div>
               </div>
             </nav>
-          </div>
+          </div>      
         </div>
+
 
         <div className="others-option-for-responsive">
           <div className="container">

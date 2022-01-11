@@ -13,7 +13,7 @@ import Subscribe from '../components/Common/Subscribe';
 const Index = () => {
   return (
     <>
-      <Banner />
+       <Banner />
       <Category />
       <ListingArea />
       <PlacesArea />

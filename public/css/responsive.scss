@@ -3367,6 +3367,9 @@ $value_nine: 1550px;
 
     .navbar-expand-md .navbar-collapse {
         background: #fff;
+        display: flex!important;
+    flex-basis: auto;
+    justify-content: flex-end;
     }
 
     .navbar-brand{
