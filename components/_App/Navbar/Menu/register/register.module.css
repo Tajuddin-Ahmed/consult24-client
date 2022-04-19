@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap");
+.font {
+  font-family: "Open Sans", sans-serif;
+}
+.label {
+  font-weight: 600;
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+}
+.inputStyle {
+  border-radius: 3px;
+  border-top: 1px solid #d3d4d5;
+  border: 1px solid #d3d4d5;
+  width: 100%;
+  height: 30px;
+}
+.inputStyle:focus {
+  border: 2px solid #0ec6c6;
+}
+.createBtn {
+  width: 100%;
+  background-color: steelblue;
+  height: 42px;
+  outline: none;
+  border: 1px solid steelblue;
+  border-radius: 3px;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.socialBtn {
+  width: 100%;
+  font-family: verdana, arial, helvetica;
+  font-size: 13px;
+  outline: 1px solid #0ec6c6;
+  height: 42px;
+  outline: none;
+  border: 1px solid #0ec6c6;
+  background-color: #fff;
+  border-radius: 3px;
+  margin-bottom: 7px;
+  transition: all 0.4s ease-out;
+}
+.socialBtn:hover,
+.socialBtn:focus {
+  background-color: steelblue;
+}
+.iconFb {
+  color: blue;
+  margin-right: 4px;
+}
+.pFont {
+  font-size: 11px;
+  /* font-family: "Roboto Condensed", sans-serif; */
+  font-family: verdana, arial, helvetica;
+}
+.beforOr {
+  width: 45%;
+  margin-bottom: -15px;
+  margin-left: -0px;
+}
+.afterOr {
+  width: 45%;
+  margin-top: -13px;
+  margin-right: 0px;
+}
+.orOption {
+  text-align: center;
+}
+.forgotFont {
+  font-size: 13px;
+  color: #0ec6c6;
+}

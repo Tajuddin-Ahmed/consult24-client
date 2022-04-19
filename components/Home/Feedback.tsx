@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
-const OwlCarousel = dynamic(import('react-owl-carousel3'));
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+const OwlCarousel = dynamic(import("react-owl-carousel3"));
 
 const options = {
   loop: true,
@@ -46,27 +46,22 @@ const Feedback = () => {
 
   return (
     <>
-      <div className='feedback-area ptb-100 bg-f9f9f9'>
-        <div className='container'>
-          <div className='section-title'>
+      <div className="feedback-area ptb-100 bg-f9f9f9">
+        <div className="container">
+          <div className="section-title">
             <h2>User’s Feedback About Us</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-              ipsum suspendisse ultrices gravida. Risus commodo viverra.
-            </p>
           </div>
 
-          <div className='feedback-slides owl-theme'>
+          <div className="feedback-slides owl-theme">
             {display ? (
               <OwlCarousel {...options}>
-                <div className='single-feedback-item'>
-                  <div className='rating'>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
+                <div className="single-feedback-item">
+                  <div className="rating">
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
                   </div>
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
@@ -74,10 +69,10 @@ const Feedback = () => {
                     ipsum suspendisse ultrices gravida. Risus viverra maecenas
                     accumsan.
                   </p>
-                  <div className='client-info'>
-                    <div className='d-flex align-items-center justify-content-center'>
-                      <img src='/images/user1.jpg' alt='image' />
-                      <div className='title'>
+                  <div className="client-info">
+                    <div className="d-flex align-items-center justify-content-center">
+                      <img src="/images/user1.jpg" alt="image" />
+                      <div className="title">
                         <h3>John Smith</h3>
                         <span>Restaurant Owner</span>
                       </div>
@@ -85,13 +80,13 @@ const Feedback = () => {
                   </div>
                 </div>
 
-                <div className='single-feedback-item'>
-                  <div className='rating'>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star-half'></i>
+                <div className="single-feedback-item">
+                  <div className="rating">
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star-half"></i>
                   </div>
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
@@ -99,10 +94,10 @@ const Feedback = () => {
                     ipsum suspendisse ultrices gravida. Risus viverra maecenas
                     accumsan.
                   </p>
-                  <div className='client-info'>
-                    <div className='d-flex align-items-center justify-content-center'>
-                      <img src='/images/user2.jpg' alt='image' />
-                      <div className='title'>
+                  <div className="client-info">
+                    <div className="d-flex align-items-center justify-content-center">
+                      <img src="/images/user2.jpg" alt="image" />
+                      <div className="title">
                         <h3>Sarah Taylor</h3>
                         <span>Hotel Owner</span>
                       </div>
@@ -110,13 +105,13 @@ const Feedback = () => {
                   </div>
                 </div>
 
-                <div className='single-feedback-item'>
-                  <div className='rating'>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bx-star'></i>
+                <div className="single-feedback-item">
+                  <div className="rating">
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bx-star"></i>
                   </div>
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
@@ -124,10 +119,10 @@ const Feedback = () => {
                     ipsum suspendisse ultrices gravida. Risus viverra maecenas
                     accumsan.
                   </p>
-                  <div className='client-info'>
-                    <div className='d-flex align-items-center justify-content-center'>
-                      <img src='/images/user3.jpg' alt='image' />
-                      <div className='title'>
+                  <div className="client-info">
+                    <div className="d-flex align-items-center justify-content-center">
+                      <img src="/images/user3.jpg" alt="image" />
+                      <div className="title">
                         <h3>Alex Hales</h3>
                         <span>Developer</span>
                       </div>
@@ -135,13 +130,13 @@ const Feedback = () => {
                   </div>
                 </div>
 
-                <div className='single-feedback-item'>
-                  <div className='rating'>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star'></i>
-                    <i className='bx bxs-star-half'></i>
-                    <i className='bx bx-star'></i>
+                <div className="single-feedback-item">
+                  <div className="rating">
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star"></i>
+                    <i className="bx bxs-star-half"></i>
+                    <i className="bx bx-star"></i>
                   </div>
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
@@ -149,10 +144,10 @@ const Feedback = () => {
                     ipsum suspendisse ultrices gravida. Risus viverra maecenas
                     accumsan.
                   </p>
-                  <div className='client-info'>
-                    <div className='d-flex align-items-center justify-content-center'>
-                      <img src='/images/user4.jpg' alt='image' />
-                      <div className='title'>
+                  <div className="client-info">
+                    <div className="d-flex align-items-center justify-content-center">
+                      <img src="/images/user4.jpg" alt="image" />
+                      <div className="title">
                         <h3>Andy James</h3>
                         <span>Traveler</span>
                       </div>
@@ -161,7 +156,7 @@ const Feedback = () => {
                 </div>
               </OwlCarousel>
             ) : (
-              ''
+              ""
             )}
           </div>
         </div>

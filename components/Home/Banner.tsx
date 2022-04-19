@@ -75,133 +75,169 @@ const Banner = () => {
 
   return (
     <>
-      <section className="banner-wrapper-area">
-        <div className="container">
-          <div className="banner-wrapper-content">
-            <h1 className="banner-three-heading">
-              <span className="typewrite"> Get Help With </span>
+      <div className="container">
+        <section className="container banner-wrapper-area">
+          <div className="container">
+            <div className="banner-wrapper-content">
+              <h1 className="banner-three-heading">
+                <span className="typewrite"> Get Help With </span>
+                <Typist>
+                  <span>Cleaning </span>
+                  <Typist.Backspace count={15} delay={300} />
+                  <span> Landscaping </span>
+                  <Typist.Backspace count={18} delay={300} />
+                  <span> Appliance Repair </span>
+                  <Typist.Backspace count={18} delay={300} />
+                  <span> Car Repair </span>
+                  <Typist.Backspace count={15} delay={300} />
+                  <span> Anything </span>
+                </Typist>
 
-              <Typist>
-                <span>Cleaning </span>
-                <Typist.Backspace count={15} delay={300} />
-                <span> Landscaping </span>
-                <Typist.Backspace count={18} delay={300} />
-                <span> Appliance Repair </span>
-                <Typist.Backspace count={15} delay={300} />
-                <span> Car Repair </span>
-                <Typist.Backspace count={15} delay={300} />
-                <span> Anything </span>
-              </Typist>
+                <span className="wrap"></span>
+              </h1>
+              <p>Get help from anywhere, anytime...</p>
+              <div className="row">
+                <div className="col-md-10">
+                  <form>
+                    <div className="row m-0 align-items-center">
+                      <div className="col-lg-5 col-md-12 p-0">
+                        <div className="form-group">
+                          <label></label>
+                          <ReactSearchAutocomplete
+                            items={services}
+                            onSearch={handleOnSearch}
+                            onHover={handleOnHover}
+                            onSelect={handleOnSelect}
+                            onFocus={handleOnFocus}
+                            autoFocus
+                            formatResult={formatResult}
+                            placeholder="Search For a Service"
+                            styling={{
+                              zIndex: "5",
+                              height: "44px",
+                              border: "0px solid #dfe1e5",
+                              borderRadius: "0px",
+                              backgroundColor: "white",
+                              boxShadow: "",
+                              hoverBackgroundColor: "#eee",
+                              color: "#212121",
+                              fontSize: "16px",
+                              fontFamily: "Arial",
+                              iconColor: "grey",
+                              lineColor: "rgb(232, 234, 237)",
+                              placeholderColor: "grey",
+                              clearIconMargin: "3px 14px 0 0",
+                              searchIconMargin: "0 0 0 16px",
+                            }}
+                          />
+                        </div>
+                      </div>
 
-              <span className="wrap"></span>
-            </h1>
-            <p>Get help from anywhere, anytime...</p>
-            <form>
-              <div className="row m-0 align-items-center">
-                <div className="col-lg-5 col-md-12 p-0">
-                  <div className="form-group">
-                    <label></label>
-                    <ReactSearchAutocomplete
-                      items={services}
-                      onSearch={handleOnSearch}
-                      onHover={handleOnHover}
-                      onSelect={handleOnSelect}
-                      onFocus={handleOnFocus}
-                      autoFocus
-                      formatResult={formatResult}
-                      placeholder="Search For a Service"
-                      styling={{
-                        zIndex: "5",
-                        height: "44px",
-                        border: "0px solid #dfe1e5",
-                        borderRadius: "0px",
-                        backgroundColor: "white",
-                        boxShadow: "",
-                        hoverBackgroundColor: "#eee",
-                        color: "#212121",
-                        fontSize: "16px",
-                        fontFamily: "Arial",
-                        iconColor: "grey",
-                        lineColor: "rgb(232, 234, 237)",
-                        placeholderColor: "grey",
-                        clearIconMargin: "3px 14px 0 0",
-                        searchIconMargin: "0 0 0 16px",
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-lg-4 col-md-6 p-0">
-                  <div className="form-group">
-                    <label>
-                      <i className="flaticon-pin"></i>
-                    </label>
-                    <ReactSearchAutocomplete
-                      items={locations}
-                      onSearch={handleOnSearch}
-                      onHover={handleOnHover}
-                      onSelect={handleOnSelect}
-                      onFocus={handleOnFocus}
-                      autoFocus
-                      formatResult={formatResult}
-                      placeholder="City"
-                      styling={{
-                        zIndex: "4",
-                        height: "44px",
-                        border: "0px solid #dfe1e5",
-                        borderRadius: "0px",
-                        backgroundColor: "white",
-                        boxShadow: "",
-                        hoverBackgroundColor: "#eee",
-                        color: "#212121",
-                        fontSize: "16px",
-                        fontFamily: "Arial",
-                        iconColor: "grey",
-                        lineColor: "rgb(232, 234, 237)",
-                        placeholderColor: "grey",
-                        clearIconMargin: "3px 14px 0 0",
-                        searchIconMargin: "0 0 0 16px",
-                      }}
-                    />
-                    {/* <input
-                      type='text'
-                      className='form-control'
-                      placeholder='Location'
+                      <div className="col-lg-4 col-md-6 p-0">
+                        <div className="form-group">
+                          <label>
+                            <i className="flaticon-pin"></i>
+                          </label>
+                          <ReactSearchAutocomplete
+                            items={locations}
+                            onSearch={handleOnSearch}
+                            onHover={handleOnHover}
+                            onSelect={handleOnSelect}
+                            onFocus={handleOnFocus}
+                            autoFocus
+                            formatResult={formatResult}
+                            placeholder="City"
+                            styling={{
+                              zIndex: "4",
+                              height: "44px",
+                              border: "0px solid #dfe1e5",
+                              borderRadius: "0px",
+                              backgroundColor: "white",
+                              boxShadow: "",
+                              hoverBackgroundColor: "#eee",
+                              color: "#212121",
+                              fontSize: "16px",
+                              fontFamily: "Arial",
+                              iconColor: "grey",
+                              lineColor: "rgb(232, 234, 237)",
+                              placeholderColor: "grey",
+                              clearIconMargin: "3px 14px 0 0",
+                              searchIconMargin: "0 0 0 16px",
+                            }}
+                          />
+                          {/* <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Location"
                     /> */}
-                  </div>
-                </div>
+                        </div>
+                      </div>
 
-                <div className="col-lg-3 col-md-12 p-0">
-                  <div className="submit-btn">
-                    <button type="submit">Search Now</button>
-                  </div>
+                      <div className="col-lg-3 col-md-12 p-0">
+                        <div className="submit-btn">
+                          <button type="submit">Search Now</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
                 </div>
+                <div className="col-md-2 "></div>
               </div>
-            </form>
-            <ul className="popular-search-list">
-              <li>Popular:</li>
-              <li>
-                <a href="#">Restaurants</a>
-              </li>
-              <li>
-                <a href="#">Events</a>
-              </li>
-              <li>
-                <a href="#">Clothing</a>
-              </li>
-              <li>
-                <a href="#">Bank</a>
-              </li>
-              <li>
-                <a href="#">Fitness</a>
-              </li>
-              <li>
-                <a href="#">Bookstore</a>
-              </li>
-            </ul>
+              <ul className="popular-search-list">
+                <li>
+                  <a
+                    className="btn btn-outline-primary text-decoration-none"
+                    type="button"
+                  >
+                    Restaurants
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    className="btn btn-outline-primary text-decoration-none"
+                    href="#"
+                  >
+                    Events
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="btn btn-outline-primary text-decoration-none"
+                    href="#"
+                  >
+                    Clothing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="btn btn-outline-primary text-decoration-none"
+                    href="#"
+                  >
+                    Bank
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="btn btn-outline-primary text-decoration-none"
+                    href="#"
+                  >
+                    Fitness
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="btn btn-outline-primary text-decoration-none"
+                    href="#"
+                  >
+                    Bookstore
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </>
   );
 };

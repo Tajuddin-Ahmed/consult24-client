@@ -1,33 +1,31 @@
 import Link from "../../../../utils/ActiveLink";
 import React from "react";
 import { menuItems } from "../../../../utils/menu-items";
-import styles from './Menu.module.css'
-
+import classes from "../../Navbar/Menu.module.css";
 export default function Menu() {
+  const handleMouseClick = (id) => {
+    document.getElementById(id).classList.toggle("d-inline");
+  };
+
   return (
     <>
-      <ul className="navbar-nav">
-        {menuItems.map((item) => {
-          return (
-            <li className="nav-item">
-              <a href="#" className="dropdown-toggle nav-link">
-                {item.name}
-              </a>
-              <ul className="dropdown-menu">
-                {item.subMenu.map((sumItem) => {
-                  return (
-                    <li className="nav-item">
-                      <Link href="/" activeClassName="active-not">
-                        <a className="nav-link">{sumItem.name}</a>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </li>
-          );
-        })}
-      </ul>
+      {menuItems.map((item) => {
+        return (
+          <div key={item.id} className={classes.dropdown}>
+            <a className={classes.dropbtn}>{item.name}</a>
+
+            <div className={classes.dropdownContent}>
+              {item.subMenu.map((subItem) => {
+                return (
+                  <a key={subItem.id} href="#">
+                    {subItem.name}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
     </>
   );
 }

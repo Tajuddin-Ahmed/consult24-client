@@ -6,9 +6,12 @@ const Footer = ({ bgColor }: { bgColor?: string }) => {
       <footer className={`footer-area ${bgColor}`}>
         <div className="container">
           <div className="row">
+            <hr />
             <div className="col-lg-3 col-sm-6 col-md-6">
               <div className="single-footer-widget">
-                <h3>About</h3>
+                <h6>
+                  Consult24 <br /> Instant help on anything
+                </h6>
 
                 <ul className="link-list">
                   <li>
@@ -54,7 +57,7 @@ const Footer = ({ bgColor }: { bgColor?: string }) => {
 
             <div className="col-lg-3 col-sm-6 col-md-6">
               <div className="single-footer-widget">
-                <h3>Discover</h3>
+                <h6>Customers</h6>
 
                 <ul className="link-list">
                   <li>
@@ -99,7 +102,7 @@ const Footer = ({ bgColor }: { bgColor?: string }) => {
 
             <div className="col-lg-3 col-sm-6 col-md-6">
               <div className="single-footer-widget">
-                <h3>Business With Indice</h3>
+                <h6>Pros</h6>
 
                 <ul className="link-list">
                   <li>
@@ -148,7 +151,7 @@ const Footer = ({ bgColor }: { bgColor?: string }) => {
 
             <div className="col-lg-3 col-sm-6 col-md-6">
               <div className="single-footer-widget">
-                <h3>Languages</h3>
+                <h6>Languages</h6>
                 <div className="languages-switch">
                   <select>
                     <option>English</option>
@@ -158,7 +161,7 @@ const Footer = ({ bgColor }: { bgColor?: string }) => {
                   </select>
                 </div>
 
-                <h3>Countries</h3>
+                <h6>Countries</h6>
                 <div className="country-switch">
                   <select>
                     <option>United States</option>
@@ -171,7 +174,7 @@ const Footer = ({ bgColor }: { bgColor?: string }) => {
             </div>
           </div>
 
-          <div className="copyright-area">
+          <div className="copyright-area pb-4">
             <p>
               Copyright @2021 <span>Indice</span> is Proudly Crafted by{" "}
               <a href="https://envytheme.com/" target="_blank" rel="noreferrer">
@@ -179,10 +182,6 @@ const Footer = ({ bgColor }: { bgColor?: string }) => {
               </a>
             </p>
           </div>
-        </div>
-
-        <div className="footer-image text-center">
-          <img src="/images/footer-image.png" alt="image" />
         </div>
       </footer>
     </>

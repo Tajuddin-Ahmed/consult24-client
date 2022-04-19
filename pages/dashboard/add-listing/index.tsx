@@ -1,14 +1,14 @@
-import Link from 'next/link';
-import Navbar  from '../../../components/_App/Navbar/Navbar';
-import DashboardNavbar from '../../../components/Dashboard/DashboardNavbar';
+import Link from "next/link";
+import Navbar from "../../../components/_App/Navbar/Navigation";
+import DashboardNavbar from "../../../components/Dashboard/DashboardNavbar";
 
-import React, { useEffect, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
 
 const AddListing = () => {
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+    accept: "image/*",
     onDrop: (acceptedFiles) => {
       setFiles(
         acceptedFiles.map((file) =>
@@ -21,7 +21,7 @@ const AddListing = () => {
   });
 
   const thumbs = files.map((file) => (
-    <div key={file.name} className='drop-gallery-thumb'>
+    <div key={file.name} className="drop-gallery-thumb">
       <img src={file.preview} />
     </div>
   ));
@@ -37,48 +37,47 @@ const AddListing = () => {
   return (
     <>
       <DashboardNavbar />
-      <div className='main-content d-flex flex-column'>
- 
-        <div className='breadcrumb-area'>
+      <div className="main-content d-flex flex-column">
+        <div className="breadcrumb-area">
           <h1>Add Listings</h1>
-          <ol className='breadcrumb'>
-            <li className='item'>
-              <Link href='/dashboard'>
+          <ol className="breadcrumb">
+            <li className="item">
+              <Link href="/dashboard">
                 <a>Home</a>
               </Link>
             </li>
-            <li className='item'>
-              <Link href='/dashboard'>
+            <li className="item">
+              <Link href="/dashboard">
                 <a>Dashboard</a>
               </Link>
             </li>
-            <li className='item'>Add Listings</li>
+            <li className="item">Add Listings</li>
           </ol>
         </div>
 
-        <div className='add-listings-box'>
+        <div className="add-listings-box">
           <h3>Basic Informations</h3>
 
-          <div className='row'>
-            <div className='col-lg-12 col-md-12'>
-              <div className='form-group'>
+          <div className="row">
+            <div className="col-lg-12 col-md-12">
+              <div className="form-group">
                 <label>
-                  <i className='bx bx-briefcase-alt'></i> Listing Title:
+                  <i className="bx bx-briefcase-alt"></i> Listing Title:
                 </label>
                 <input
-                  type='text'
-                  className='form-control'
-                  placeholder='Name of your business'
+                  type="text"
+                  className="form-control"
+                  placeholder="Name of your business"
                 />
               </div>
             </div>
 
-            <div className='col-lg-6 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-6 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bx-duplicate'></i> Type / Category:
+                  <i className="bx bx-duplicate"></i> Type / Category:
                 </label>
-                <select className='dashbaord-category-select'>
+                <select className="dashbaord-category-select">
                   <option>Select Category</option>
                   <option>Shops</option>
                   <option>Hotels</option>
@@ -89,31 +88,31 @@ const AddListing = () => {
               </div>
             </div>
 
-            <div className='col-lg-6 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-6 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bxs-key'></i> Keywords:
+                  <i className="bx bxs-key"></i> Keywords:
                 </label>
                 <input
-                  type='text'
-                  className='form-control'
-                  placeholder='Maximum 15 , should be separated by commas'
+                  type="text"
+                  className="form-control"
+                  placeholder="Maximum 15 , should be separated by commas"
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className='add-listings-box'>
+        <div className="add-listings-box">
           <h3>Location</h3>
 
-          <div className='row'>
-            <div className='col-lg-6 col-md-6'>
-              <div className='form-group'>
+          <div className="row">
+            <div className="col-lg-6 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bx-menu-alt-left'></i> City:
+                  <i className="bx bx-menu-alt-left"></i> City:
                 </label>
-                <select className='dashbaord-category-select'>
+                <select className="dashbaord-category-select">
                   <option>Select City</option>
                   <option>New York</option>
                   <option>London</option>
@@ -124,229 +123,230 @@ const AddListing = () => {
               </div>
             </div>
 
-            <div className='col-lg-6 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-6 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bx-menu-alt-left'></i> Address:
+                  <i className="bx bx-menu-alt-left"></i> Address:
                 </label>
                 <input
-                  type='text'
-                  className='form-control'
-                  placeholder='e.g. 55 County Laois'
+                  type="text"
+                  className="form-control"
+                  placeholder="e.g. 55 County Laois"
                 />
               </div>
             </div>
 
-            <div className='col-lg-6 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-6 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bx-menu-alt-left'></i> State:
+                  <i className="bx bx-menu-alt-left"></i> State:
                 </label>
-                <input type='text' className='form-control' />
+                <input type="text" className="form-control" />
               </div>
             </div>
 
-            <div className='col-lg-6 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-6 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bx-menu-alt-left'></i> Zip-Code:
+                  <i className="bx bx-menu-alt-left"></i> Zip-Code:
                 </label>
-                <input type='text' className='form-control' />
+                <input type="text" className="form-control" />
               </div>
             </div>
           </div>
         </div>
 
-        <div {...getRootProps()} className='dropzone add-listings-box'>
+        <div {...getRootProps()} className="dropzone add-listings-box">
           <h3>Gallery</h3>
           {files.length > 0 ? (
-            <div className='gallery-flex'>
+            <div className="gallery-flex">
               {thumbs}
               <input {...getInputProps()} />
             </div>
           ) : (
-            <div className='file-upload-box'>
+            <div className="file-upload-box">
               <input {...getInputProps()} />
               <p>Drag 'n' drop some files here, or click to select files</p>
             </div>
           )}
         </div>
 
-        <div className='add-listings-box'>
+        <div className="add-listings-box">
           <h3>Details</h3>
 
-          <div className='row'>
-            <div className='col-lg-12 col-md-12'>
-              <div className='form-group'>
+          <div className="row">
+            <div className="col-lg-12 col-md-12">
+              <div className="form-group">
                 <label>
-                  <i className='bx bx-text'></i> Description:
+                  <i className="bx bx-text"></i> Description:
                 </label>
                 <textarea
                   cols={30}
                   rows={7}
-                  className='form-control'
-                  placeholder='Details...'
+                  className="form-control"
+                  placeholder="Details..."
                 ></textarea>
               </div>
             </div>
 
-            <div className='col-lg-4 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-4 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bx-envelope'></i> Email Address:{' '}
+                  <i className="bx bx-envelope"></i> Email Address:{" "}
                   <span>(optional)</span>
                 </label>
-                <input type='email' className='form-control' />
+                <input type="email" className="form-control" />
               </div>
             </div>
 
-            <div className='col-lg-4 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-4 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bx-globe'></i> Website: <span>(optional)</span>
-                </label>
-                <input type='text' className='form-control' />
-              </div>
-            </div>
-
-            <div className='col-lg-4 col-md-6'>
-              <div className='form-group'>
-                <label>
-                  <i className='bx bx-phone-call'></i> Phone:{' '}
+                  <i className="bx bx-globe"></i> Website:{" "}
                   <span>(optional)</span>
                 </label>
-                <input type='text' className='form-control' />
+                <input type="text" className="form-control" />
               </div>
             </div>
 
-            <div className='col-lg-4 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-4 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bxl-facebook-square'></i> Facebook:{' '}
+                  <i className="bx bx-phone-call"></i> Phone:{" "}
+                  <span>(optional)</span>
+                </label>
+                <input type="text" className="form-control" />
+              </div>
+            </div>
+
+            <div className="col-lg-4 col-md-6">
+              <div className="form-group">
+                <label>
+                  <i className="bx bxl-facebook-square"></i> Facebook:{" "}
                   <span>(optional)</span>
                 </label>
                 <input
-                  type='text'
-                  className='form-control'
-                  placeholder='https://www.facebook.com/'
+                  type="text"
+                  className="form-control"
+                  placeholder="https://www.facebook.com/"
                 />
               </div>
             </div>
 
-            <div className='col-lg-4 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-4 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bxl-twitter'></i> Twitter:{' '}
+                  <i className="bx bxl-twitter"></i> Twitter:{" "}
                   <span>(optional)</span>
                 </label>
                 <input
-                  type='text'
-                  className='form-control'
-                  placeholder='https://www.twitter.com/'
+                  type="text"
+                  className="form-control"
+                  placeholder="https://www.twitter.com/"
                 />
               </div>
             </div>
 
-            <div className='col-lg-4 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-4 col-md-6">
+              <div className="form-group">
                 <label>
-                  <i className='bx bxl-linkedin'></i> Linkedin:{' '}
+                  <i className="bx bxl-linkedin"></i> Linkedin:{" "}
                   <span>(optional)</span>
                 </label>
                 <input
-                  type='text'
-                  className='form-control'
-                  placeholder='https://www.linkedin.com/'
+                  type="text"
+                  className="form-control"
+                  placeholder="https://www.linkedin.com/"
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className='add-listings-box'>
+        <div className="add-listings-box">
           <h3>Facilities</h3>
 
-          <div className='form-group'>
-            <ul className='facilities-list'>
+          <div className="form-group">
+            <ul className="facilities-list">
               <li>
-                <label className='checkbox'>
+                <label className="checkbox">
                   <input
-                    type='checkbox'
-                    name='facilities-list'
-                    value='free-wifi'
+                    type="checkbox"
+                    name="facilities-list"
+                    value="free-wifi"
                     checked
                   />
                   <span>Free WiFi</span>
                 </label>
               </li>
               <li>
-                <label className='checkbox'>
+                <label className="checkbox">
                   <input
-                    type='checkbox'
-                    name='facilities-list'
-                    value='parking'
+                    type="checkbox"
+                    name="facilities-list"
+                    value="parking"
                   />
                   <span>Parking</span>
                 </label>
               </li>
               <li>
-                <label className='checkbox'>
+                <label className="checkbox">
                   <input
-                    type='checkbox'
-                    name='facilities-list'
-                    value='fitness-center'
+                    type="checkbox"
+                    name="facilities-list"
+                    value="fitness-center"
                     checked
                   />
                   <span>Fitness Center</span>
                 </label>
               </li>
               <li>
-                <label className='checkbox'>
+                <label className="checkbox">
                   <input
-                    type='checkbox'
-                    name='facilities-list'
-                    value='non-smoking-rooms'
+                    type="checkbox"
+                    name="facilities-list"
+                    value="non-smoking-rooms"
                   />
                   <span>Non-smoking Rooms</span>
                 </label>
               </li>
               <li>
-                <label className='checkbox'>
+                <label className="checkbox">
                   <input
-                    type='checkbox'
-                    name='facilities-list'
-                    value='airport-shuttle'
+                    type="checkbox"
+                    name="facilities-list"
+                    value="airport-shuttle"
                     checked
                   />
                   <span>Airport Shuttle</span>
                 </label>
               </li>
               <li>
-                <label className='checkbox'>
+                <label className="checkbox">
                   <input
-                    type='checkbox'
-                    name='facilities-list'
-                    value='air-conditioning'
+                    type="checkbox"
+                    name="facilities-list"
+                    value="air-conditioning"
                   />
                   <span>Air Conditioning</span>
                 </label>
               </li>
               <li>
-                <label className='checkbox'>
+                <label className="checkbox">
                   <input
-                    type='checkbox'
-                    name='facilities-list'
-                    value='events'
+                    type="checkbox"
+                    name="facilities-list"
+                    value="events"
                   />
                   <span>Events</span>
                 </label>
               </li>
               <li>
-                <label className='checkbox'>
+                <label className="checkbox">
                   <input
-                    type='checkbox'
-                    name='facilities-list'
-                    value='friendly-workspace'
+                    type="checkbox"
+                    name="facilities-list"
+                    value="friendly-workspace"
                   />
                   <span>Friendly Workspace</span>
                 </label>
@@ -355,31 +355,31 @@ const AddListing = () => {
           </div>
         </div>
 
-        <div className='add-listings-box'>
+        <div className="add-listings-box">
           <h3>Sidebar Widgets</h3>
 
-          <div className='form-group'>
-            <div className='sidebar-widgets'>
-              <div className='box'>
-                <span className='title'>Booking Form</span>
-                <label className='switch'>
-                  <input type='checkbox' />
+          <div className="form-group">
+            <div className="sidebar-widgets">
+              <div className="box">
+                <span className="title">Booking Form</span>
+                <label className="switch">
+                  <input type="checkbox" />
                   <span></span>
                 </label>
               </div>
 
-              <div className='box'>
-                <span className='title'>Price Range</span>
-                <label className='switch'>
-                  <input type='checkbox' checked />
+              <div className="box">
+                <span className="title">Price Range</span>
+                <label className="switch">
+                  <input type="checkbox" checked />
                   <span></span>
                 </label>
               </div>
 
-              <div className='box'>
-                <span className='title'>Instagram</span>
-                <label className='switch'>
-                  <input type='checkbox' />
+              <div className="box">
+                <span className="title">Instagram</span>
+                <label className="switch">
+                  <input type="checkbox" />
                   <span></span>
                 </label>
               </div>
@@ -387,16 +387,16 @@ const AddListing = () => {
           </div>
         </div>
 
-        <div className='add-listings-box'>
+        <div className="add-listings-box">
           <h3>Opening Hours</h3>
 
-          <div className='row opening-day align-items-center'>
-            <div className='col-lg-2 col-md-12'>
+          <div className="row opening-day align-items-center">
+            <div className="col-lg-2 col-md-12">
               <h5>Monday</h5>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Opening Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -426,8 +426,8 @@ const AddListing = () => {
               </select>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Closing Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -458,13 +458,13 @@ const AddListing = () => {
             </div>
           </div>
 
-          <div className='row opening-day align-items-center'>
-            <div className='col-lg-2 col-md-12'>
+          <div className="row opening-day align-items-center">
+            <div className="col-lg-2 col-md-12">
               <h5>Tuesday</h5>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Opening Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -494,8 +494,8 @@ const AddListing = () => {
               </select>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Closing Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -526,13 +526,13 @@ const AddListing = () => {
             </div>
           </div>
 
-          <div className='row opening-day align-items-center'>
-            <div className='col-lg-2 col-md-12'>
+          <div className="row opening-day align-items-center">
+            <div className="col-lg-2 col-md-12">
               <h5>Wednesday</h5>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Opening Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -562,8 +562,8 @@ const AddListing = () => {
               </select>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Closing Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -594,13 +594,13 @@ const AddListing = () => {
             </div>
           </div>
 
-          <div className='row opening-day align-items-center'>
-            <div className='col-lg-2 col-md-12'>
+          <div className="row opening-day align-items-center">
+            <div className="col-lg-2 col-md-12">
               <h5>Thursday</h5>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Opening Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -630,8 +630,8 @@ const AddListing = () => {
               </select>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Closing Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -662,13 +662,13 @@ const AddListing = () => {
             </div>
           </div>
 
-          <div className='row opening-day align-items-center'>
-            <div className='col-lg-2 col-md-12'>
+          <div className="row opening-day align-items-center">
+            <div className="col-lg-2 col-md-12">
               <h5>Friday</h5>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Opening Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -698,8 +698,8 @@ const AddListing = () => {
               </select>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Closing Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -730,13 +730,13 @@ const AddListing = () => {
             </div>
           </div>
 
-          <div className='row opening-day align-items-center'>
-            <div className='col-lg-2 col-md-12'>
+          <div className="row opening-day align-items-center">
+            <div className="col-lg-2 col-md-12">
               <h5>Saturday</h5>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Opening Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -766,8 +766,8 @@ const AddListing = () => {
               </select>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Closing Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -798,13 +798,13 @@ const AddListing = () => {
             </div>
           </div>
 
-          <div className='row opening-day align-items-center'>
-            <div className='col-lg-2 col-md-12'>
+          <div className="row opening-day align-items-center">
+            <div className="col-lg-2 col-md-12">
               <h5>Sunday</h5>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Opening Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -834,8 +834,8 @@ const AddListing = () => {
               </select>
             </div>
 
-            <div className='col-lg-5 col-md-6'>
-              <select className='dashbaord-category-select'>
+            <div className="col-lg-5 col-md-6">
+              <select className="dashbaord-category-select">
                 <option>Closing Time</option>
                 <option>Closed</option>
                 <option>1 AM</option>
@@ -867,36 +867,40 @@ const AddListing = () => {
           </div>
         </div>
 
-        <div className='add-listings-box'>
+        <div className="add-listings-box">
           <h3>Pricing</h3>
 
-          <div className='form-group'>
+          <div className="form-group">
             <label>
-              <i className='bx bx-purchase-tag'></i> Pricing:
+              <i className="bx bx-purchase-tag"></i> Pricing:
             </label>
-            <input type='text' className='form-control' placeholder='$542.00' />
+            <input type="text" className="form-control" placeholder="$542.00" />
           </div>
         </div>
 
-        <div className='add-listings-btn'>
-          <button type='submit'>Submit Listings</button>
+        <div className="add-listings-btn">
+          <button type="submit">Submit Listings</button>
         </div>
 
-        <div className='flex-grow-1'></div>
+        <div className="flex-grow-1"></div>
 
-        <div className='copyrights-area'>
-          <div className='row align-items-center'>
-            <div className='col-lg-6 col-sm-6 col-md-6'>
+        <div className="copyrights-area">
+          <div className="row align-items-center">
+            <div className="col-lg-6 col-sm-6 col-md-6">
               <p>
-                <i className='bx bx-copyright'></i>2020 <a href='#'>Indice</a>. All
-                rights reserved
+                <i className="bx bx-copyright"></i>2020 <a href="#">Indice</a>.
+                All rights reserved
               </p>
             </div>
 
-            <div className='col-lg-6 col-sm-6 col-md-6 text-right'>
+            <div className="col-lg-6 col-sm-6 col-md-6 text-right">
               <p>
-                Designed by ❤️{' '}
-                <a href='https://envytheme.com/' target='_blank' rel="noreferrer">
+                Designed by ❤️{" "}
+                <a
+                  href="https://envytheme.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   EnvyTheme
                 </a>
               </p>

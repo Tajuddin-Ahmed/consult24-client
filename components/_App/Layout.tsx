@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Footer from "./Footer";
-import Navbar from "./Navbar/Navbar";
+import Navigation from "./Navbar/Navigation";
 
 const Layout = ({ children }: { children: any }) => {
   return (
@@ -9,9 +9,15 @@ const Layout = ({ children }: { children: any }) => {
         {/* Required meta tags */}
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Indice - Directory & Listing React Next Template</title>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+          integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+          crossOrigin="anonymous"
+        ></script>
+        <title>Consult24</title>
       </Head>
-      <Navbar></Navbar>
+      <Navigation></Navigation>
       {children}
       <Footer></Footer>
     </>
