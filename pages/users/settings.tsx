@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import classes from "../../components/_App/Navbar/Menu/register/register.module.css";
+import cls from "./profile.module.css";
 const Settings = () => {
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -32,7 +33,7 @@ const Settings = () => {
   }
   return (
     <>
-      <h6 className="text-white text-center">Settings</h6>
+      <h6 className={`text-white ${cls.font}`}> Account Settings</h6>
       <div className="row d-flex justify-content-center">
         <div className="col-md-12">
           <form

@@ -1,6 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap");
 .homeText {
-  font-family: "Oleo Script Swash Caps", cursive;
+  font-family: "Open Sans", sans-serif;
   color: #0ec6c6;
 }
 .providerContainer {
@@ -57,6 +57,7 @@
   font-size: 16px;
   border: none;
   border-right: 1px solid white;
+  font-family: "Open Sans", sans-serif;
 }
 .dropbtn:hover {
   border-bottom: 4px solid tomato;

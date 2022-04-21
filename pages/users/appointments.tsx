@@ -4,7 +4,7 @@ const Appointment = () => {
     <>
       <h5 className={`text-center text-white ${cls.font}`}>Appointments</h5>
       <div className="pb-1">
-        <button className={` btn btn-light float-end ${cls.font}`}>
+        <button className={` btn btn-outline-light  float-end ${cls.font}`}>
           Make Appointment
         </button>
       </div>

@@ -3,3 +3,7 @@
 .font {
   font-family: "Open Sans", sans-serif;
 }
+.btnHover:hover {
+  background-color: steelblue;
+  color: white;
+}

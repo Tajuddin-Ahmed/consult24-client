@@ -13,14 +13,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Link from "next/link";
-import UserInfo from "./userInfo";
-import Settings from "./settings";
-import Invoicing from "./invoicing";
-import Notification from "./notification";
-import Inbox from "./inbox";
-import Bill from "./bills";
-import Appointment from "./appointments";
+import UserInfo from "../userInfo";
+import Settings from "../settings";
+import Invoicing from "../invoicing";
+import Notification from "../notification";
+import Inbox from "../inbox";
+import Bill from "../bills";
+import Appointment from "../appointments";
 import { useEffect, useState } from "react";
+import Profile from "../userProfile";
 const UserProfile = () => {
   const [loading, setLoading] = useState(false);
 
@@ -72,37 +73,21 @@ const UserProfile = () => {
   }
   return (
     <>
-      <div className="container mt-1">
-        <div className="row bg-light d-flex justify-content-around p-4">
+      <div className="bg-light mt-1">
+        <div className="row  d-flex justify-content-around p-4">
           <div className="col-md-2 bg-white shadow-sm">
             <div className="tab">
               <button
                 className="tablinks"
-                onClick={() => openCity(event, "userInfo")}
+                onClick={() => openCity(event, "appointments")}
                 id="defaultOpen"
               >
                 <p className="border-bottom d-flex align-items-center justify-content-between">
                   <a className="d-flex align-items-center">
                     <span className="pe-1" style={{ color: "lightseagreen" }}>
-                      <FaUser />
+                      <FaCalendarCheck />
                     </span>
-                    User info
-                  </a>
-                  <a>
-                    <IoIosArrowForward />
-                  </a>
-                </p>
-              </button>
-              <button
-                className="tablinks"
-                onClick={() => openCity(event, "userAccount")}
-              >
-                <p className="border-bottom d-flex align-items-center justify-content-between">
-                  <a className="d-flex align-items-center">
-                    <span className="pe-1" style={{ color: "lightseagreen" }}>
-                      <FcSettings />
-                    </span>
-                    Settings
+                    Appointment
                   </a>
                   <a>
                     <IoIosArrowForward />
@@ -127,14 +112,14 @@ const UserProfile = () => {
               </button>
               <button
                 className="tablinks"
-                onClick={() => openCity(event, "notification")}
+                onClick={() => openCity(event, "userInfo")}
               >
                 <p className="border-bottom d-flex align-items-center justify-content-between">
                   <a className="d-flex align-items-center">
                     <span className="pe-1" style={{ color: "lightseagreen" }}>
-                      <IoIosNotifications />
+                      <FaUser />
                     </span>
-                    Notification
+                    User info
                   </a>
                   <a>
                     <IoIosArrowForward />
@@ -175,14 +160,14 @@ const UserProfile = () => {
               </button>
               <button
                 className="tablinks"
-                onClick={() => openCity(event, "appointments")}
+                onClick={() => openCity(event, "userAccount")}
               >
                 <p className="border-bottom d-flex align-items-center justify-content-between">
                   <a className="d-flex align-items-center">
                     <span className="pe-1" style={{ color: "lightseagreen" }}>
-                      <FaCalendarCheck />
+                      <FcSettings />
                     </span>
-                    Appointment
+                    Settings
                   </a>
                   <a>
                     <IoIosArrowForward />
@@ -193,29 +178,29 @@ const UserProfile = () => {
           </div>
 
           <div
-            className="col-md-9 p-3 rounded"
+            className="col-md-10 p-4 rounded"
             style={{ backgroundColor: "steelblue" }}
           >
+            <div id="appointments" className="tabcontent ">
+              <Appointment></Appointment>
+            </div>
             <div id="userInfo" className="tabcontent">
-              <UserInfo></UserInfo>
+              <Profile></Profile>
             </div>
-            <div id="userAccount" className="tabcontent">
-              <Settings></Settings>
-            </div>
+
             <div id="invoicing" className="tabcontent">
               <Invoicing></Invoicing>
             </div>
-            <div id="notification" className="tabcontent">
-              <Notification></Notification>
-            </div>
+            <div id="notification" className="tabcontent"></div>
             <div id="inbox" className="tabcontent ">
               <Inbox></Inbox>
             </div>
             <div id="billPayments" className="tabcontent ">
               <Bill></Bill>
             </div>
-            <div id="appointments" className="tabcontent ">
-              <Appointment></Appointment>
+            <div id="userAccount" className="tabcontent">
+              <Settings></Settings>
+              <Notification></Notification>
             </div>
           </div>
         </div>

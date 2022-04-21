@@ -3,17 +3,12 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Menu from "./Menu/Menu";
 import { FaAngleDown, FaUser, FaUserTie } from "react-icons/fa";
-import classes from "../Navbar/Menu.module.css";
+import classes from "../../../pages/users/profile.module.css";
 // import RemoveCookie from "../../hooks/removeCookie";
 
 const Navigation = () => {
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    setTimeout(() => setLoading(true), 0);
-  }, []);
 
   const userLogout = async () => {
     const token = localStorage.getItem("token");
@@ -84,7 +79,7 @@ const Navigation = () => {
                 <Link href="/dashboard/add-listing">
                   <a className="text-primary text-decoration-underline pe-3">
                     <FaUserTie />
-                    Join as an Expert
+                    <span className={classes.font}>Join as an Expert</span>
                   </a>
                 </Link>
               </div>
@@ -133,10 +128,28 @@ const Navigation = () => {
                                 marginTop: "14px",
                               }}
                             >
-                              <li>
-                                <Link href="/users/customerProfile">
-                                  <a className="dropdown-item">Profile</a>
-                                </Link>
+                              <li
+                                onClick={() =>
+                                  router.push({
+                                    pathname: `/users/profile/${user.id}`,
+                                    query: {
+                                      username: JSON.stringify(user.username),
+                                      email: JSON.stringify(user.email),
+                                    },
+                                  })
+                                }
+                              >
+                                {/* <Link
+                                  href={{
+                                    pathname: `/users/profile/${user.id}`,
+                                    query: {
+                                      username: JSON.stringify(user.username),
+                                      email: JSON.stringify(user.email),
+                                    },
+                                  }}
+                                > */}
+                                <a className="dropdown-item">Profile</a>
+                                {/* </Link> */}
                               </li>
                               <li>
                                 <a className="dropdown-item" href="#">
@@ -159,14 +172,18 @@ const Navigation = () => {
                 <div className="ps-1">
                   {/* <Link href="/home/login"> */}
                   <a href="/home/login" className="pe-2">
-                    <FaUser />
-                    Sign In
+                    <span style={{ color: "steelblue", fontSize: "15px" }}>
+                      <FaUser />
+                    </span>
+                    <span className={classes.font}>Sign In</span>
                   </a>
                   {/* </Link> */}
                   <Link href="/home/register">
                     <a>
-                      <FaUser />
-                      Sign Up
+                      <span style={{ color: "steelblue", fontSize: "15px" }}>
+                        <FaUser />
+                      </span>
+                      <span className={classes.font}>Sign Up</span>
                     </a>
                   </Link>
                 </div>

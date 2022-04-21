@@ -88,7 +88,7 @@ const MostVisitedListing = () => {
                 <TabPanel>
                   <div className="row">
                     <div className="col-xl-4 col-lg-4 col-md-4 restaurant">
-                      <div className="single-listings-box without-boxshadow">
+                      <div className="single-listings-box without-boxshadow ">
                         <div className="listings-image">
                           <img
                             src="/images/listings/listings7.jpg"

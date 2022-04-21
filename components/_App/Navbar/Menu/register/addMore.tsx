@@ -60,8 +60,9 @@ const AddInfo = () => {
     lastName: Yup.string()
       .required("Last Name is required")
       .matches(/^[a-zA-Z ]{2,30}$/, "Enter valid last name"),
-    address1: Yup.string().required("address1 is required"),
-    address2: Yup.string().required("address2 is required"),
+    country: Yup.string().required("country is required"),
+    address: Yup.string().required("address is required"),
+
     phone: Yup.string().required("phone is required"),
     city: Yup.string().required("city is required"),
     state: Yup.string().required("state is required"),
@@ -140,6 +141,101 @@ const AddInfo = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* hidden data  */}
+                    
+                    <input
+                      name="middlename"
+                      type="hidden"
+                      {...register("middlename")}
+                      className={`${classes.inputStyle} ${
+                        errors.middlename ? "is-invalid" : ""
+                      }`}
+                    />
+
+                    <input
+                      name="online_status"
+                      type="hidden"
+                      {...register("online_status")}
+                      className={`${classes.inputStyle} ${
+                        errors.online_status ? "is-invalid" : ""
+                      }`}
+                    />
+
+                    <input
+                      name="activity_status"
+                      type="hidden"
+                      {...register("activity_status")}
+                      className={`${classes.inputStyle} ${
+                        errors.activity_status ? "is-invalid" : ""
+                      }`}
+                    />
+
+                    <input
+                      name="account_status"
+                      type="hidden"
+                      {...register("account_status")}
+                      className={`${classes.inputStyle} ${
+                        errors.account_status ? "is-invalid" : ""
+                      }`}
+                    />
+                    <input
+                      name="payment_to_method"
+                      type="hidden"
+                      {...register("payment_to_method")}
+                      className={`${classes.inputStyle} ${
+                        errors.payment_to_method ? "is-invalid" : ""
+                      }`}
+                    />
+                    <input
+                      name="payment_from_method"
+                      type="hidden"
+                      {...register("payment_from_method")}
+                      className={`${classes.inputStyle} ${
+                        errors.payment_from_method ? "is-invalid" : ""
+                      }`}
+                    />
+                    <input
+                      name="avg_rating"
+                      type="hidden"
+                      {...register("avg_rating")}
+                      className={`${classes.inputStyle} ${
+                        errors.avg_rating ? "is-invalid" : ""
+                      }`}
+                    />
+                    <input
+                      name="lifetime_service_count"
+                      type="hidden"
+                      {...register("lifetime_service_count")}
+                      className={`${classes.inputStyle} ${
+                        errors.avg_rating ? "is-invalid" : ""
+                      }`}
+                    />
+                    <input
+                      name="positive_review_id"
+                      type="hidden"
+                      {...register("positive_review_id")}
+                      className={`${classes.inputStyle} ${
+                        errors.positive_review_id ? "is-invalid" : ""
+                      }`}
+                    />
+                    <input
+                      name="negative_review_id"
+                      type="hidden"
+                      {...register("negative_review_id")}
+                      className={`${classes.inputStyle} ${
+                        errors.negative_review_id ? "is-invalid" : ""
+                      }`}
+                    />
+                    <input
+                      name="pref_provider_list"
+                      type="hidden"
+                      {...register("pref_provider_list")}
+                      className={`${classes.inputStyle} ${
+                        errors.pref_provider_list ? "is-invalid" : ""
+                      }`}
+                    />
+
                     <div className="col-md-6">
                       <div className="mb-2">
                         <label className={classes.label}>lastName</label>
@@ -168,34 +264,78 @@ const AddInfo = () => {
                       />
                     </div>
                   </div>
-                  <div className="mb-2">
-                    <label className={classes.label}>Street Adress 1</label>
-                    <br />
-                    <input
-                      name="address1"
-                      type="text"
-                      {...register("address1")}
-                      className={`${classes.inputStyle} ${
-                        errors.address1 ? "is-invalid" : ""
-                      }`}
-                    />
-                    <div className="invalid-feedback">
-                      {errors.address1?.message}
+                  <div className="row">
+                    <div className="col-md-4">
+                      <div className="mb-2">
+                        <label className={classes.label}>Gender</label>
+                        <br />
+                        <select
+                          name="state"
+                          {...register("state")}
+                          className={`${classes.inputStyle} ${
+                            errors.state ? "is-invalid" : ""
+                          }`}
+                        >
+                          <option value="">Select one</option>
+                          <option value="AL">Male</option>
+                          <option value="AK">Female</option>
+                          <option value="AZ">Other</option>
+                        </select>
+                        <div className="invalid-feedback">
+                          {errors.state?.message}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="mb-2">
+                        <label className={classes.label}>Country</label>
+                        <br />
+                        <input
+                          name="country"
+                          type="text"
+                          {...register("country")}
+                          className={`${classes.inputStyle} ${
+                            errors.country ? "is-invalid" : ""
+                          }`}
+                        />
+                        <div className="invalid-feedback">
+                          {errors.country?.message}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="col-md-4">
+                      <div className="mb-2">
+                        <label className={classes.label}>Apartment</label>
+                        <br />
+                        <input
+                          name="apartment"
+                          type="text"
+                          {...register("apartment")}
+                          className={`${classes.inputStyle} ${
+                            errors.apartment ? "is-invalid" : ""
+                          }`}
+                        />
+                        <div className="invalid-feedback">
+                          {errors.apartment?.message}
+                        </div>
+                      </div>
                     </div>
                   </div>
+
                   <div className="mb-2">
-                    <label className={classes.label}>Street Adress 2</label>
+                    <label className={classes.label}>Street Adress</label>
                     <br />
                     <input
-                      name="address2"
+                      name="address"
                       type="text"
-                      {...register("address2")}
+                      {...register("address")}
                       className={`${classes.inputStyle} ${
-                        errors.address2 ? "is-invalid" : ""
+                        errors.address ? "is-invalid" : ""
                       }`}
                     />
                     <div className="invalid-feedback">
-                      {errors.address2?.message}
+                      {errors.address?.message}
                     </div>
                   </div>
                   <div className="mb-2">
@@ -242,7 +382,7 @@ const AddInfo = () => {
                             errors.state ? "is-invalid" : ""
                           }`}
                         >
-                          <option value="Select one">Select one</option>
+                          <option value="">Select one</option>
                           <option value="AL">AL</option>
                           <option value="AK">AK</option>
                           <option value="AZ">AZ</option>
@@ -261,7 +401,7 @@ const AddInfo = () => {
                           <option value="KS">KS</option>
                         </select>
                         <div className="invalid-feedback">
-                          {errors.address2?.message}
+                          {errors.state?.message}
                         </div>
                       </div>
                     </div>
