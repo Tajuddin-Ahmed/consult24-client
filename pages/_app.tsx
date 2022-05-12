@@ -12,22 +12,42 @@ import Layout from "../components/_App/Layout";
 import Loader from "../components/_App/Shared/Loader";
 import GoTop from "../components/_App/Shared/GoTop";
 import "../public/css/tabStyle.css";
+import { AppContext } from "../components/_App/Navbar/Navigation";
+import { getUser } from "../components/hooks/createAndLogin";
+import { SessionProvider } from "next-auth/react";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({});
+
   useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      if (token === undefined || token === null) {
+        return;
+      } else {
+        const user = await getUser();
+        setUser(user);
+      }
+    };
+    fetchData();
+
     setTimeout(() => setLoading(false), 0);
   }, []);
 
   return (
     <>
-      <Layout>
-        <IndiceProvider>
-          <Component {...pageProps} />
-          <Loader loading={loading} />
-          <GoTop />
-        </IndiceProvider>
-      </Layout>
+      <SessionProvider session={session}>
+        <AppContext.Provider value={user}>
+          <Layout>
+            <IndiceProvider>
+              <Component {...pageProps} />
+              <Loader loading={loading} />
+              <GoTop />
+            </IndiceProvider>
+          </Layout>
+        </AppContext.Provider>
+      </SessionProvider>
     </>
   );
 }

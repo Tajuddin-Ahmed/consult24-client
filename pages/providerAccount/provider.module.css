@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap");
+.bgImg {
+  background-image: url(/images/main-banner-bg5.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.font {
+  font-family: "Open Sans", sans-serif;
+}
+.businessInput {
+  width: 100%;
+  border: 1px solid lightseagreen;
+  padding: 6px;
+  border-radius: 2px;
+}
+.pHeight {
+  margin: 0;
+  padding: 0;
+  line-height: "1px" !important;
+  font-size: 13px;
+}

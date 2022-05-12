@@ -10,34 +10,40 @@ import * as Yup from "yup";
 import RemoveCookie from "../../../../hooks/removeCookie";
 import SetCookie from "../../../../hooks/setCookie";
 import GetCookie from "../../../../hooks/getCookie";
+import { loginToUser } from "../../../../hooks/createAndLogin";
+import router, { useRouter } from "next/router";
+import axios from "axios";
 
-export async function getCurrentToken(email: string, password: string) {
-  try {
-    const response = await fetch(
-      "https://c24apidev.accelx.net/auth/token/login/",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    const value = JSON.stringify(data.auth_token);
-    localStorage.setItem("token", value);
-    return data.auth_token;
-  } catch (error) {
-    console.log(error.message);
-  }
-}
+// export async function getCurrentToken(email: string, password: string) {
+//   console.log(email, password);
+//   try {
+//     const response = await fetch(
+//       "https://c24apidev.accelx.net/auth/token/login/",
+//       {
+//         method: "POST",
+//         body: JSON.stringify({
+//           email: email,
+//           password: password,
+//         }),
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+//     const data = await response.json();
+//     const value = JSON.stringify(data.auth_token);
+//     localStorage.setItem("token", value);
+//     console.log(value);
+//     return data.auth_token;
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// }
 
 const LoginPage = () => {
   const [error, setError] = useState("");
   const [stateOfInput, setStateOfInput] = useState("");
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
     password: Yup.string()
@@ -58,10 +64,11 @@ const LoginPage = () => {
     (document.getElementById("userPassword") as HTMLInputElement).value =
       userCookie.password;
   }
+
+  // Submit login form data
+
   async function onSubmit(data) {
-    console.log(data);
-    // display form data on success
-    const token = await getCurrentToken(data.email, data.password);
+    const token = await loginToUser(data.email, data.password);
     if (token) {
       if (data.rememberMe) {
         RemoveCookie("usrin");
@@ -72,6 +79,20 @@ const LoginPage = () => {
       setError("Credentials error");
     }
     return false;
+  }
+
+  // google authentication handling
+
+  async function handleGoogleSignIn() {
+    console.log("clicked");
+    try {
+      const res = await axios.get(
+        `c24apidev.accelx.net/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/`
+      );
+      window.location.replace(res.data.authorization_url);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   return (
@@ -146,11 +167,9 @@ const LoginPage = () => {
                 </div>
                 <p className={classes.pFont}></p>
                 <button className={classes.createBtn}>Login</button>
-                <p className={classes.orOption}>
-                  <hr className={classes.beforOr} />
-                  OR
-                  <hr className={classes.afterOr} />
-                </p>
+              </form>
+              <div className="bg-white container">
+                <p className={classes.orOption}>OR</p>
                 <p className={classes.pFont}>
                   By clicking Sign up with Facebook or Sign up with Google, you
                   agree to the
@@ -174,14 +193,17 @@ const LoginPage = () => {
                   Continue with Facebook
                 </button>
                 <br />
-                <button className={classes.socialBtn}>
+                <button
+                  className={classes.socialBtn}
+                  onClick={handleGoogleSignIn}
+                >
                   <FcGoogle />
                   Continue with Google
                 </button>
                 <button className={classes.socialBtn}>
                   <FaApple /> Continue with Apple
                 </button>
-              </form>
+              </div>
             </div>
             <div className="text-center my-5">
               <p className={classes.font} style={{ color: "white" }}>

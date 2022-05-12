@@ -17,9 +17,14 @@ export default function Menu() {
             <div className={classes.dropdownContent}>
               {item.subMenu.map((subItem) => {
                 return (
-                  <a key={subItem.id} href="#">
-                    {subItem.name}
-                  </a>
+                  <Link
+                    href={{
+                      pathname: "/search/searchByItem",
+                      query: { item: subItem.name },
+                    }}
+                  >
+                    <a key={subItem.id}>{subItem.name}</a>
+                  </Link>
                 );
               })}
             </div>

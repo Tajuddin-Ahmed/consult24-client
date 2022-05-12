@@ -26,7 +26,7 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setLoading(true), 0);
+    setTimeout(() => setLoading(true), 1000);
   }, []);
   function openCity(evt, menuItem) {
     var i, tabcontent, tablinks;
@@ -110,6 +110,7 @@ const UserProfile = () => {
                   </a>
                 </p>
               </button>
+
               <button
                 className="tablinks"
                 onClick={() => openCity(event, "userInfo")}
@@ -126,6 +127,7 @@ const UserProfile = () => {
                   </a>
                 </p>
               </button>
+
               <button
                 className="tablinks"
                 onClick={() => openCity(event, "inbox")}
@@ -191,7 +193,6 @@ const UserProfile = () => {
             <div id="invoicing" className="tabcontent">
               <Invoicing></Invoicing>
             </div>
-            <div id="notification" className="tabcontent"></div>
             <div id="inbox" className="tabcontent ">
               <Inbox></Inbox>
             </div>

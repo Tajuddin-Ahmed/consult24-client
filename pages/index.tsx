@@ -21,7 +21,6 @@ const Index = () => {
       <Feedback />
       <MostVisitedListing />
       <Blog />
-
       {/* <Subscribe /> */}
     </>
   );

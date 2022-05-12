@@ -1,7 +1,24 @@
 import Typist from "react-typist";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const Banner = () => {
+  const [service, setService] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(service, zipCode);
+    if (!service && !zipCode) {
+      setError("Please Fill out this field");
+      return;
+    } else {
+      router.push("/search/searchResult");
+    }
+  };
+
   const services = [
     {
       id: 0,
@@ -48,10 +65,16 @@ const Banner = () => {
     },
   ];
 
-  const handleOnSearch = (string, results) => {
-    // onSearch will have as the first callback parameter
-    // the string searched and for the second the results.
-    console.log(string, results);
+  // const handleOnSearch = (string, results) => {
+  //   // onSearch will have as the first callback parameter
+  //   // the string searched and for the second the results.
+  //   console.log(string, results);
+  // };
+  const handleService = (string) => {
+    setService(string);
+  };
+  const handleZipCode = (string) => {
+    setZipCode(string);
   };
 
   const handleOnHover = (result) => {
@@ -105,7 +128,8 @@ const Banner = () => {
                           <label></label>
                           <ReactSearchAutocomplete
                             items={services}
-                            onSearch={handleOnSearch}
+                            // onSearch={handleOnSearch}
+                            onSearch={handleService}
                             onHover={handleOnHover}
                             onSelect={handleOnSelect}
                             onFocus={handleOnFocus}
@@ -140,13 +164,13 @@ const Banner = () => {
                           </label>
                           <ReactSearchAutocomplete
                             items={locations}
-                            onSearch={handleOnSearch}
+                            onSearch={handleZipCode}
                             onHover={handleOnHover}
                             onSelect={handleOnSelect}
                             onFocus={handleOnFocus}
                             autoFocus
                             formatResult={formatResult}
-                            placeholder="City"
+                            placeholder="Zip Code"
                             styling={{
                               zIndex: "4",
                               height: "44px",
@@ -175,11 +199,14 @@ const Banner = () => {
 
                       <div className="col-lg-3 col-md-12 p-0">
                         <div className="submit-btn">
-                          <button type="submit">Search Now</button>
+                          <button type="submit" onClick={handleSubmit}>
+                            Search Now
+                          </button>
                         </div>
                       </div>
                     </div>
                   </form>
+                  {error && <p>{error}</p>}
                 </div>
                 <div className="col-md-2 "></div>
               </div>

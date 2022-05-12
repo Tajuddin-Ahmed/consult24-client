@@ -1,89 +1,58 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import Menu from "./Menu/Menu";
 import { FaAngleDown, FaUser, FaUserTie } from "react-icons/fa";
 import classes from "../../../pages/users/profile.module.css";
+import { continueWithGoogle, userLogout } from "../../hooks/createAndLogin";
+import queryString from "query-string";
+
 // import RemoveCookie from "../../hooks/removeCookie";
+// import { useSession, signIn, signOut } from "next-auth/react";
+
+export const AppContext = createContext({});
 
 const Navigation = () => {
-  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  const userLogout = async () => {
-    const token = localStorage.getItem("token");
-    const parsedToken = JSON.parse(token);
-    try {
-      await fetch("https://c24apidev.accelx.net/auth/token/logout/", {
-        method: "POST",
-        body: token,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Token " + parsedToken,
-        },
-      });
-      localStorage.setItem("token", null);
-      window.location.href = "/";
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
+  const code = router.query.code;
+  const state = router.query.state;
+  // const { data: session } = useSession();
+  // console.log(session);
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token === null || token === "undefined") {
-      return;
-    } else {
-      // window.location.href = "/";
-      const parsedToken = JSON.parse(token);
-      const userData = async () => {
-        if (parsedToken) {
-          try {
-            const response = await fetch(
-              "https://c24apidev.accelx.net/auth/users/me/",
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: "Token " + parsedToken,
-                },
-              }
-            );
-            const data = await response.json();
-            setUser(data);
-          } catch (error) {}
-        } else {
-          return;
-        }
-      };
-      userData();
+    setTimeout(() => setLoading(true), 0);
+    if (state && code) {
+      continueWithGoogle(state, code);
     }
-  }, []);
+  }, [state, code]);
+
+  const user = useContext(AppContext);
 
   return (
     <>
       <header className="container">
         <div className="border-bottom">
           <div className="row">
-            <div className="col col-md-6 d-flex align-items-center">
+            <div className=" col-md-6 col-lg-6 d-flex align-items-center">
               <Link href="/">
-                <a href="">
+                <a>
                   <h1>
-                    <span style={{ color: "steelblue;" }}>Consult</span>
+                    <span style={{ color: "steelblue" }}>Consult</span>
                     <span style={{ color: "orange" }}>24</span>
                   </h1>
                 </a>
               </Link>
             </div>
-            <div className="col col-md-6 d-flex align-items-center justify-content-end">
+            <div className="col-md-6 col-lg-6 d-flex align-items-center justify-content-end">
               <div>
-                <Link href="/dashboard/add-listing">
+                <Link href="/providerAccount/bookNewJob">
                   <a className="text-primary text-decoration-underline pe-3">
                     <FaUserTie />
                     <span className={classes.font}>Join as an Expert</span>
                   </a>
                 </Link>
               </div>
-              {user.username ? (
+              {user?.username ? (
                 <div className="d-flex align-items-center">
                   <button
                     className="navbar-toggler d-none"
@@ -101,10 +70,7 @@ const Navigation = () => {
                   </Link>
                   <Link href="/">
                     <a>
-                      <div
-                        className="collapse navbar-collapse"
-                        id="navbarNavDarkDropdown"
-                      >
+                      <div id="navbarNavDarkDropdown">
                         <ul className="navbar nav">
                           <li className="nav-item dropdown">
                             <a
@@ -115,8 +81,8 @@ const Navigation = () => {
                               data-bs-toggle="dropdown"
                               aria-expanded="false"
                             >
-                              {user.username[0].toUpperCase() +
-                                user.username.split(" ")[1][0].toUpperCase()}
+                              {user?.username[0].toUpperCase() +
+                                user?.username.split(" ")[1][0].toUpperCase()}
 
                               <FaAngleDown />
                             </a>
@@ -128,28 +94,10 @@ const Navigation = () => {
                                 marginTop: "14px",
                               }}
                             >
-                              <li
-                                onClick={() =>
-                                  router.push({
-                                    pathname: `/users/profile/${user.id}`,
-                                    query: {
-                                      username: JSON.stringify(user.username),
-                                      email: JSON.stringify(user.email),
-                                    },
-                                  })
-                                }
-                              >
-                                {/* <Link
-                                  href={{
-                                    pathname: `/users/profile/${user.id}`,
-                                    query: {
-                                      username: JSON.stringify(user.username),
-                                      email: JSON.stringify(user.email),
-                                    },
-                                  }}
-                                > */}
-                                <a className="dropdown-item">Profile</a>
-                                {/* </Link> */}
+                              <li>
+                                <Link href={`/users/profile/${user?.id}`}>
+                                  <a className="dropdown-item">Profile</a>
+                                </Link>
                               </li>
                               <li>
                                 <a className="dropdown-item" href="#">

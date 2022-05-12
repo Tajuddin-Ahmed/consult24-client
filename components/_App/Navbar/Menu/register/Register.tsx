@@ -8,50 +8,14 @@ import signup from "../../../../../public/images/claim-your-business.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-
-// sign up form
-async function createUser(
-  username: string,
-  role: string,
-  email: string,
-  password: string,
-  re_password: string
-) {
-  const response = await fetch("https://c24apidev.accelx.net/auth/users/", {
-    method: "POST",
-    body: JSON.stringify({ username, role, email, password, re_password }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.json();
-  console.log(data);
-  if (!response.ok) {
-    throw new Error(data.message || "Something went wrong");
-  }
-  return data;
-}
+import { useRouter } from "next/router";
+import { createUser, loginToUser } from "../../../../hooks/createAndLogin";
 
 // login to user
-const loginToUser = async (userEmail, userPassword) => {
-  try {
-    const response = await fetch(
-      "https://c24apidev.accelx.net/auth/token/login/",
-      {
-        method: "POST",
-        body: JSON.stringify({ email: userEmail, password: userPassword }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    return data.auth_token;
-  } catch (error) {}
-};
 
 const RegisterPage = () => {
   const [error, setError] = useState("");
+  const router = useRouter();
   // form validation
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -85,7 +49,7 @@ const RegisterPage = () => {
         console.log(result);
         if (result) {
           const token = await loginToUser(data.email, data.password);
-          localStorage.setItem("token", JSON.stringify(token));
+          console.log(token);
           if (token) {
             window.location.href = "/";
           }
@@ -200,7 +164,7 @@ const RegisterPage = () => {
                         <a className="px-1 text-primary">Terms of Use</a>
                       </Link>
                     </span>
-                    and{" "}
+                    and
                     <span className="px-1">
                       <Link href="#">
                         <a className=" text-primary">Privacy Policy</a>
@@ -211,11 +175,9 @@ const RegisterPage = () => {
                   <button type="submit" className={classes.createBtn}>
                     Create Account
                   </button>
-                  <p className={classes.orOption}>
-                    <hr className={classes.beforOr} />
-                    OR
-                    <hr className={classes.afterOr} />
-                  </p>
+                </form>
+                <div className="container">
+                  <p className={classes.orOption}>OR</p>
                   <p className={classes.pFont}>
                     By clicking Sign up with Facebook or Sign up with Google,
                     you agree to the
@@ -242,7 +204,7 @@ const RegisterPage = () => {
                   <button className={classes.socialBtn}>
                     <FcGoogle /> Sign up with Google
                   </button>
-                </form>
+                </div>
                 <div className="text-center my-3">
                   <p className={classes.font}>
                     Already have an account ?

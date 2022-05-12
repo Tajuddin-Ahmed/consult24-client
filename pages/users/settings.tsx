@@ -251,6 +251,61 @@ const Settings = () => {
           </form>
         </div>
       </div>
+      <div className="row d-flex justify-content-center">
+        <div className="col-md-12 mt-1">
+          <form
+            className="container bg-white p-3 shadow rounded"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <h6>Change Address</h6>
+
+            <div className="row">
+              <div className="col-md-6">
+                <div className="mb-2">
+                  <label className={`${classes.label} fw-normal`}>
+                    Current Email
+                  </label>
+                  <br />
+                  <input
+                    name="phone"
+                    type="text"
+                    {...register("email")}
+                    className={`${classes.inputStyle} ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
+                  />
+                  <div className="invalid-feedback">
+                    {errors.email?.message}
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="mb-2">
+                  <label className={`${classes.label} fw-normal`}>
+                    New Email
+                  </label>
+                  <br />
+                  <input
+                    name="phone"
+                    type="text"
+                    {...register("email")}
+                    className={`${classes.inputStyle} ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
+                  />
+                  <div className="invalid-feedback">
+                    {errors.email?.message}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" className={classes.createBtn}>
+              Save
+            </button>
+          </form>
+        </div>
+      </div>
     </>
   );
 };
