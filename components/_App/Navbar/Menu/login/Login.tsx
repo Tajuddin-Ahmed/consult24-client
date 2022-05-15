@@ -87,8 +87,9 @@ const LoginPage = () => {
     console.log("clicked");
     try {
       const res = await axios.get(
-        `c24apidev.accelx.net/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/`
+        `https://c24apidev.accelx.net/auth/o/google-oauth2/?redirect_uri=http://localhost:3000`
       );
+      // console.log(res);
       window.location.replace(res.data.authorization_url);
     } catch (error) {
       console.log(error.message);

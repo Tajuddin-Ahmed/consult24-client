@@ -17,6 +17,7 @@ const Navigation = () => {
   const router = useRouter();
   const code = router.query.code;
   const state = router.query.state;
+  console.log(code, state);
   // const { data: session } = useSession();
   // console.log(session);
   useEffect(() => {

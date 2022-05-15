@@ -5,20 +5,22 @@ import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import axios from "axios";
 
 const Profile = () => {
   const [image, setImage] = useState(null);
-  const [picture, setPicture] = useState(null);
+  const [updated, setUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [imageId, setImageId] = useState(null);
   const router = useRouter();
-  const id = router.query.id;
+  const userid = router.query.id;
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
       try {
         await fetch(
-          `https://c24apidev.accelx.net/auth_api/user_profile_pic_update/${id}`,
+          `https://c24apidev.accelx.net/auth_api/profile_picture/49`,
           {
             method: "GET",
             headers: {
@@ -36,8 +38,8 @@ const Profile = () => {
       } catch (error) {}
     };
     fetchData();
-  }, [image]);
-  const onFileChange = (e) => setPicture(e.target.files[0]);
+  }, [updated]);
+  const onFileChange = (e) => setImage(e.target.files[0]);
   // const handleProfileUpload = async (e) => {
   //   const file = e.target.files[0];
   //   console.log(typeof file);
@@ -89,25 +91,28 @@ const Profile = () => {
 
   const handlePhotoUpload = async (e) => {
     e.preventDefault();
+
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    };
     let formData = new FormData();
-    formData.append("profile_picture", picture, picture.name);
-    console.log(picture.name);
+    formData.append("profile_picture", image);
+    formData.append("uploaded_user", userid);
+
+    const body = formData;
     try {
-      const response = await fetch(
-        "https://c24apidev.accelx.net/auth_api/user_profile_pic/",
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            "Content-Type":
-              "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-            Authorization: "Token " + localStorage.getItem("token"),
-          },
-        }
+      const res = await axios.post(
+        "https://c24apidev.accelx.net/auth_api/profile_picture/",
+        body,
+        config
       );
-      const data = await response.json();
-      console.log(data);
-      setImage(data.profile_picture);
+      if (res.status === 201) {
+        setImageId(res.data.id);
+        setUpdated(!updated);
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -186,7 +191,7 @@ const Profile = () => {
                       <input
                         type="file"
                         id="file"
-                        name="profile_picture"
+                        name="image"
                         className="inputfile"
                         onChange={onFileChange}
                       />
