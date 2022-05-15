@@ -62,9 +62,7 @@ const LeadPrice = () => {
 
                   <button
                     className="float-end btn btn-info mt-3"
-                    onClick={() =>
-                      router.push("/providerAccount/providerProfile")
-                    }
+                    onClick={() => router.push("/providerAccount/setHours")}
                   >
                     next
                   </button>

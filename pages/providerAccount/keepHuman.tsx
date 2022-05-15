@@ -87,7 +87,7 @@ const KeepHuman = () => {
                     </div>
                     <p style={{ fontSize: "12px" }}>
                       Enter your name exactly as it appears on your
-                      governement-issued ID
+                      government-issued ID
                     </p>
                   </div>
                   <div>
