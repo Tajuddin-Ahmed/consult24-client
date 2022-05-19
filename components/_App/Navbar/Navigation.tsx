@@ -17,17 +17,16 @@ const Navigation = () => {
   const router = useRouter();
   const code = router.query.code;
   const state = router.query.state;
-  console.log(code, state);
+  const user: any = useContext(AppContext);
   // const { data: session } = useSession();
   // console.log(session);
   useEffect(() => {
     setTimeout(() => setLoading(true), 0);
     if (state && code) {
+      console.log(code, state);
       continueWithGoogle(state, code);
     }
-  }, [state, code]);
-
-  const user = useContext(AppContext);
+  }, [router]);
 
   return (
     <>

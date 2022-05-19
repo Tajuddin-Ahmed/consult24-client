@@ -1,5 +1,4 @@
 import axios from "axios";
-
 // create user
 export async function createUser(
   username: string,
@@ -45,20 +44,21 @@ export const loginToUser = async (userEmail: string, userPassword: string) => {
 // get user
 export async function getUser() {
   const token = localStorage.getItem("token");
-  console.log(token);
-  try {
-    const response = await fetch(
-      "https://c24apidev.accelx.net/auth/users/me/",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Token " + token,
-        },
-      }
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {}
+  if (token) {
+    try {
+      const response = await fetch(
+        "https://c24apidev.accelx.net/auth/users/me/",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Token " + token,
+          },
+        }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {}
+  }
 }
 // logout
 export const userLogout = async () => {
@@ -73,7 +73,6 @@ export const userLogout = async () => {
       },
     });
     localStorage.setItem("token", null);
-
     window.location.href = "/";
   } catch (error) {
     console.log(error.message);
@@ -82,7 +81,6 @@ export const userLogout = async () => {
 
 // google authentication
 export const continueWithGoogle = async (state, code) => {
-  console.log(state, code);
   if (state && code && !localStorage.getItem("token")) {
     const config = {
       headers: {
@@ -93,6 +91,7 @@ export const continueWithGoogle = async (state, code) => {
     const details = {
       state: state,
       code: code,
+      role: 2,
     };
 
     const formBody = Object.keys(details)
@@ -103,11 +102,12 @@ export const continueWithGoogle = async (state, code) => {
       .join("&");
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?${formBody}`,
+        `https://c24apidev.accelx.net/auth/o/google-oauth2/?${formBody}`,
         config
       );
       const data = res.data;
       console.log(data);
+      console.log("It is called");
     } catch (error) {
       console.log(error.message);
     }

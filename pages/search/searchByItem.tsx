@@ -11,17 +11,12 @@ const SearchByItem = () => {
   const user = useContext(AppContext);
   const router = useRouter();
   const handleOnChange = (e) => {
-    if (e.target.value.length > 4) {
+    const value = e.target.value.replace(/\D/g, "");
+    setZipCode(value);
+    if (value.length > 4 || value.length === 0) {
       document.getElementById("inputField").style.border = "1px solid blue";
     } else {
-      if (e.target.value.length === 0) {
-        document.getElementById("inputField").style.border = "1px solid blue";
-      } else {
-        document
-          .getElementById("zipcode")
-          .addEventListener("keypress", function (e) {});
-        document.getElementById("inputField").style.border = "1px solid red";
-      }
+      document.getElementById("inputField").style.border = "1px solid red";
     }
   };
   const data = router.query;
@@ -49,6 +44,7 @@ const SearchByItem = () => {
                   placeholder="Zip Code"
                   //   aria-label="Username"
                   onChange={handleOnChange}
+                  value={zipCode}
                   maxLength={5}
                   aria-describedby="basic-addon1"
                 />

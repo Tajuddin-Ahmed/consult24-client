@@ -5,13 +5,65 @@ import { FcSearch } from "react-icons/fc";
 import { GrLocation } from "react-icons/gr";
 import { IoMdArrowBack } from "react-icons/io";
 import { AppContext } from "../../components/_App/Navbar/Navigation";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import cls from "./provider.module.css";
+import FormikControl from "../../components/Provider/control/formikControls";
 const AboutYourself = () => {
   const user = useContext(AppContext);
   const router = useRouter();
-
+  console.log(router.query);
+  const onSubmit = (values) => {
+    console.log(values);
+    router.push(
+      {
+        pathname: "/providerAccount/winningProfile",
+        query: {
+          ...values,
+          serviceName: router.query.serviceName,
+          phone: router.query.phone,
+          termsOfService: router.query.termsOfService,
+          location: router.query.location,
+          checkboxOption: router.query.checkboxOption,
+        },
+      },
+      "/providerAccount/winningProfile"
+    );
+  };
+  const budgetOptions = [
+    { key: "I don't currently spend on online marketing", value: "bOption1" },
+    { key: "$1-$100", value: "bOption2" },
+    { key: "$100- $400", value: "bOption3" },
+    { key: "$400-$2500", value: "bOption4" },
+    { key: "More than $2500", value: "bOption5" },
+  ];
+  const businessGoalOptions = [
+    { key: "Grow and Scale my business", value: "gOption1" },
+    { key: "Build up a side business", value: "gOption2" },
+    { key: "Maintain my current business size ?", value: "gOption3" },
+    { key: "Other", value: "gOption4" },
+  ];
+  const languageOptions = [
+    { key: "English", value: "lOption1" },
+    { key: "Bangla", value: "lOption2" },
+    { key: "Other", value: "lOption3" },
+  ];
+  const initialValues = {
+    budgetOption: "",
+    businessGoalOption: "",
+    languageOption: "",
+  };
+  const validationSchema = Yup.object({
+    budgetOption: Yup.string().required("Required"),
+    businessGoalOption: Yup.string().required("Required"),
+    languageOption: Yup.string().required("Required"),
+  });
   return (
-    <>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+    >
       <div className={`bg-light pt-3 pb-5 ${cls.bgImg}`}>
         <div className="row">
           <div className="container">
@@ -33,176 +85,43 @@ const AboutYourself = () => {
                     Please answer three quick questions to help us understand
                     your business needs
                   </p>
-                  <form action="#">
-                    <fieldset className="mb-2" id="group1">
-                      <p
-                        className={`card-text  ${cls.font}`}
-                        style={{ cursor: "pointer", color: "black" }}
-                        id="selectBtn"
-                      >
-                        How much do you spend each month on online marketing ?
-                      </p>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1"
-                          type="radio"
-                          value=""
-                          id="q1"
-                          name="group1"
-                        />
-                        <label htmlFor="q1">
-                          I don't currently spend on online marketing
-                        </label>
-                      </div>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1 "
-                          type="radio"
-                          value=""
-                          id="q2"
-                          name="group1"
-                        />
-                        <label htmlFor="q2"> $1-$100</label>
-                      </div>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1 "
-                          type="radio"
-                          value=""
-                          id="q3"
-                          name="group1"
-                        />
-                        <label htmlFor="q3"> $100- $400</label>
-                      </div>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1 "
-                          type="radio"
-                          value=""
-                          id="q4"
-                          name="group1"
-                        />
-                        <label htmlFor="q4"> $400-$2500</label>
-                      </div>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1 "
-                          type="radio"
-                          value=""
-                          id="q5"
-                          name="group1"
-                        />
-                        <label htmlFor="q5"> More than $2500</label>
-                      </div>
-                    </fieldset>
-                    <fieldset className="mb-2" id="group2">
-                      <p
-                        className={`card-text  ${cls.font}`}
-                        style={{ cursor: "pointer", color: "black" }}
-                        id="selectBtn"
-                      >
-                        What's your main business goal ?
-                      </p>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1"
-                          type="radio"
-                          value=""
-                          id="q6"
-                          name="group2"
-                        />
-                        <label htmlFor="q6"> Grow and Scale my business</label>
-                      </div>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1 "
-                          type="radio"
-                          value=""
-                          id="q7"
-                          name="group2"
-                        />
-                        <label htmlFor="q7">Build up a side business</label>
-                      </div>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1 "
-                          type="radio"
-                          value=""
-                          id="q8"
-                          name="group2"
-                        />
-                        <label htmlFor="q8">
-                          Maintain my current business size ?
-                        </label>
-                      </div>
 
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1 "
-                          type="radio"
-                          value=""
-                          id="q9"
-                          name="group2"
-                        />
-                        <label htmlFor="q9"> Other</label>
-                      </div>
-                    </fieldset>
-                    <fieldset id="group3">
-                      <p
-                        className={`card-text  ${cls.font}`}
-                        style={{ cursor: "pointer", color: "black" }}
-                        id="selectBtn"
-                      >
-                        What's your preferred language ?
-                      </p>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1"
-                          type="radio"
-                          value=""
-                          id="qq1"
-                          name="group3"
-                        />
-                        <label htmlFor="qq1"> English</label>
-                      </div>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1 "
-                          type="radio"
-                          value=""
-                          id="qq2"
-                          name="group3"
-                        />
-                        <label htmlFor="qq2">Bangla</label>
-                      </div>
-                      <div className="d-flex align-items-center border-bottom py-2">
-                        <input
-                          className="me-1 "
-                          type="radio"
-                          value=""
-                          id="qq3"
-                          name="group3"
-                        />
-                        <label htmlFor="qq3"> Other</label>
-                      </div>
-                    </fieldset>
-                  </form>
-
-                  <button
-                    className="w-100 btn btn-info mt-3"
-                    onClick={() =>
-                      router.push("/providerAccount/winningProfile")
-                    }
-                  >
-                    Next
-                  </button>
+                  <Form>
+                    <FormikControl
+                      control="radio"
+                      label="How much do you spend each month on online marketing ?"
+                      name="budgetOption"
+                      options={budgetOptions}
+                    />
+                    <FormikControl
+                      control="radio"
+                      label="What's your main business goal ?"
+                      name="businessGoalOption"
+                      options={businessGoalOptions}
+                    />
+                    <FormikControl
+                      control="radio"
+                      label="What's your preferred language ?"
+                      name="languageOption"
+                      options={languageOptions}
+                    />
+                    <button
+                      className="w-100 btn btn-info mt-3"
+                      type="submit"
+                      // onClick={() =>
+                      //   router.push("/providerAccount/winningProfile")
+                      // }
+                    >
+                      Next
+                    </button>
+                  </Form>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </Formik>
   );
 };
 export default AboutYourself;

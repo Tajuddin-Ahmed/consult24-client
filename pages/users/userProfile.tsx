@@ -11,65 +11,119 @@ const Profile = () => {
   const [image, setImage] = useState(null);
   const [updated, setUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imageId, setImageId] = useState(null);
+  const [imageId, setImageId] = useState();
   const router = useRouter();
-  const userid = router.query.id;
+  const userid: any = router.query.id;
 
   useEffect(() => {
     setLoading(true);
-    const fetchData = async () => {
+    console.log(image);
+    const getImageId = async () => {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Token " + localStorage.getItem("token"),
+        },
+      };
       try {
-        await fetch(
-          `https://c24apidev.accelx.net/auth_api/profile_picture/49`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Token " + localStorage.getItem("token"),
-            },
-          }
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-            setImage(data.profile_picture);
-            setLoading(false);
-          });
+        const res = await axios.get(
+          "https://c24apidev.accelx.net/auth_api/CustomerProfilePicture/",
+          config
+        );
+        if (res.status === 200) {
+          const count = await res.data.count;
+          const id = await res.data.results[count - 1].id;
+          setImageId(id);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getImageId();
+    console.log(imageId);
+    const fetchData = async () => {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Token " + localStorage.getItem("token"),
+        },
+      };
+      try {
+        const res = await axios.get(
+          `https://c24apidev.accelx.net/auth_api/profile_picture/${imageId}`,
+          config
+        );
+        setImage(res.data.profile_picture);
+        setLoading(false);
       } catch (error) {}
     };
     fetchData();
-  }, [updated]);
-  const onFileChange = (e) => setImage(e.target.files[0]);
-  // const handleProfileUpload = async (e) => {
-  //   const file = e.target.files[0];
-  //   console.log(typeof file);
+  }, [updated, imageId]);
 
-  //   try {
-  //     setLoading(true);
-  //     const response = await fetch(
-  //       `https://c24apidev.accelx.net/auth_api/user_profile_pic_update/${id}`,
-  //       {
-  //         method: "PUT",
-  //         body: JSON.stringify({
-  //           profile_picture: file,
-  //           uploaded_user: 2,
-  //         }),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Token " + token,
-  //         },
-  //       }
-  //     );
-  //     const data = await response.json();
-  //     console.log(data);
-  //     setImage(data.profile_picture);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
+  //  START UPLOAD PHOTO
+  const onFileChange = async (e) => {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        Authorization: "Token " + localStorage.getItem("token"),
+      },
+    };
+    let formData = new FormData();
+    formData.append("profile_picture", e.target.files[0]);
+    formData.append("uploaded_user", userid);
+    const body = formData;
 
-  // Form Validation
+    try {
+      const res = await axios.post(
+        "https://c24apidev.accelx.net/auth_api/profile_picture/",
+        body,
+        config
+      );
+      if (res.status === 201) {
+        localStorage.setItem("imageId", res.data.id);
+        setImage(res.data.profile_picture);
+        setUpdated(!updated);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  //  END UPLOAD PHOTO
+
+  //  START UPDATE PHOTO
+
+  const handlePhotoUpdate = async (e) => {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        Authorization: "Token " + localStorage.getItem("token"),
+      },
+    };
+    let formData = new FormData();
+    formData.append("profile_picture", e.target.files[0]);
+    formData.append("uploaded_user", userid);
+    const body = formData;
+
+    try {
+      const res = await axios.put(
+        `https://c24apidev.accelx.net/auth_api/profile_picture/${imageId}/`,
+        body,
+        config
+      );
+      if (res.status === 200) {
+        setImage(res.data.profile_picture);
+        setUpdated(!updated);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //  END UPDATE PHOTO
+
+  // START Form Validation
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
       .required("First Name is required")
@@ -85,43 +139,16 @@ const Profile = () => {
     phone: Yup.string().required("phone is required"),
     zipCode: Yup.string().required("zipCode is required"),
   });
+
+  // END FORM VALIDATION
   const formOptions = { resolver: yupResolver(validationSchema) };
   const { register, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors } = formState;
 
-  const handlePhotoUpload = async (e) => {
-    e.preventDefault();
-
-    const config = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    let formData = new FormData();
-    formData.append("profile_picture", image);
-    formData.append("uploaded_user", userid);
-
-    const body = formData;
-    try {
-      const res = await axios.post(
-        "https://c24apidev.accelx.net/auth_api/profile_picture/",
-        body,
-        config
-      );
-      if (res.status === 201) {
-        setImageId(res.data.id);
-        setUpdated(!updated);
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
   async function onSubmit(data) {
     try {
       const response = await fetch(
-        `https://c24apidev.accelx.net/auth_api/customer_profile/${id}`,
+        `https://c24apidev.accelx.net/auth_api/customer_profile/${userid}`,
         {
           method: "PUT",
           body: JSON.stringify({
@@ -177,16 +204,18 @@ const Profile = () => {
         <div>
           <div className="my-profile-box">
             <h3>Profile Details</h3>
-            <form onSubmit={handlePhotoUpload}>
-              <div className="row">
-                <div className="col-lg-12 col-md-12">
-                  <div className="form-group profile-box">
-                    {image ? (
-                      <img src={image} width={400} height={400} alt="image" />
-                    ) : (
-                      <img src="/images/user1.jpg" alt="image" />
-                    )}
 
+            {/* START UPLOAD PROFILE  */}
+            <div className="row">
+              <div className="col-lg-12 col-md-12">
+                <div className="form-group profile-box">
+                  {image ? (
+                    <img src={image} width={400} height={400} alt="image" />
+                  ) : (
+                    <img src="/images/user1.jpg" alt="image" />
+                  )}
+
+                  {!image ? (
                     <div className="file-upload">
                       <input
                         type="file"
@@ -200,13 +229,26 @@ const Profile = () => {
                         Upload Photo
                       </label>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="file-upload">
+                      <input
+                        type="file"
+                        id="file"
+                        name="image"
+                        className="inputfile"
+                        onChange={handlePhotoUpdate}
+                      />
+                      <label htmlFor="file">
+                        <i className="bx bx-upload"></i>
+                        Change
+                      </label>
+                    </div>
+                  )}
                 </div>
-                <button type="submit" className="w-25">
-                  save
-                </button>
               </div>
-            </form>
+            </div>
+            {/* END UPLOAD PROFILE */}
+
             <form className="d-flex" onSubmit={handleSubmit(onSubmit)}>
               <div className="row">
                 <div className="col-lg-6 col-md-12">

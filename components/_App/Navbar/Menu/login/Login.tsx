@@ -14,32 +14,6 @@ import { loginToUser } from "../../../../hooks/createAndLogin";
 import router, { useRouter } from "next/router";
 import axios from "axios";
 
-// export async function getCurrentToken(email: string, password: string) {
-//   console.log(email, password);
-//   try {
-//     const response = await fetch(
-//       "https://c24apidev.accelx.net/auth/token/login/",
-//       {
-//         method: "POST",
-//         body: JSON.stringify({
-//           email: email,
-//           password: password,
-//         }),
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-//     const data = await response.json();
-//     const value = JSON.stringify(data.auth_token);
-//     localStorage.setItem("token", value);
-//     console.log(value);
-//     return data.auth_token;
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// }
-
 const LoginPage = () => {
   const [error, setError] = useState("");
   const [stateOfInput, setStateOfInput] = useState("");
@@ -87,7 +61,7 @@ const LoginPage = () => {
     console.log("clicked");
     try {
       const res = await axios.get(
-        `https://c24apidev.accelx.net/auth/o/google-oauth2/?redirect_uri=http://localhost:3000`
+        `https://c24apidev.accelx.net/auth/o/google-oauth2/?redirect_uri=https://c24apidev.accelx.net`
       );
       // console.log(res);
       window.location.replace(res.data.authorization_url);
