@@ -20,3 +20,7 @@
   line-height: "1px" !important;
   font-size: 13px;
 }
+
+.providerServic:hover {
+  transform: scale(1.5);
+}

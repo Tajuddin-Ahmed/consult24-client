@@ -12,41 +12,40 @@ import FormikControl from "../../components/Provider/control/formikControls";
 const AboutYourself = () => {
   const user = useContext(AppContext);
   const router = useRouter();
-  console.log(router.query);
+  const data = router.query;
+  console.log(data);
   const onSubmit = (values) => {
-    console.log(values);
     router.push(
       {
-        pathname: "/providerAccount/winningProfile",
+        pathname: "/providerAccount/additionalInfo",
         query: {
           ...values,
-          serviceName: router.query.serviceName,
-          phone: router.query.phone,
-          termsOfService: router.query.termsOfService,
-          location: router.query.location,
-          checkboxOption: router.query.checkboxOption,
+          ...data,
         },
       },
-      "/providerAccount/winningProfile"
+      "/providerAccount/additionalInfo"
     );
   };
   const budgetOptions = [
-    { key: "I don't currently spend on online marketing", value: "bOption1" },
-    { key: "$1-$100", value: "bOption2" },
-    { key: "$100- $400", value: "bOption3" },
-    { key: "$400-$2500", value: "bOption4" },
-    { key: "More than $2500", value: "bOption5" },
+    { key: "I don't currently spend on online marketing", value: "No" },
+    { key: "$1-$100", value: "$1-$100" },
+    { key: "$100- $400", value: "$100- $400" },
+    { key: "$400-$2500", value: "$400-$2500" },
+    { key: "More than $2500", value: "More than $2500" },
   ];
   const businessGoalOptions = [
-    { key: "Grow and Scale my business", value: "gOption1" },
-    { key: "Build up a side business", value: "gOption2" },
-    { key: "Maintain my current business size ?", value: "gOption3" },
-    { key: "Other", value: "gOption4" },
+    { key: "Grow and Scale my business", value: "Grow and Scale my business" },
+    { key: "Build up a side business", value: "Build up a side business" },
+    {
+      key: "Maintain my current business size ?",
+      value: "Maintain my current business size",
+    },
+    { key: "Other", value: "Other" },
   ];
   const languageOptions = [
-    { key: "English", value: "lOption1" },
-    { key: "Bangla", value: "lOption2" },
-    { key: "Other", value: "lOption3" },
+    { key: "English", value: "English" },
+    { key: "Bangla", value: "Bangla" },
+    { key: "Other", value: "Other" },
   ];
   const initialValues = {
     budgetOption: "",

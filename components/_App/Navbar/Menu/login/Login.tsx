@@ -11,13 +11,28 @@ import RemoveCookie from "../../../../hooks/removeCookie";
 import SetCookie from "../../../../hooks/setCookie";
 import GetCookie from "../../../../hooks/getCookie";
 import { loginToUser } from "../../../../hooks/createAndLogin";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage = () => {
   const [error, setError] = useState("");
   const [stateOfInput, setStateOfInput] = useState("");
+  const router = useRouter();
 
+  const notify = (message) => {
+    toast.error(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 3000,
+    });
+  };
+  const notify1 = (message) => {
+    toast.success(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 1000,
+    });
+  };
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
     password: Yup.string()
@@ -48,9 +63,12 @@ const LoginPage = () => {
         RemoveCookie("usrin");
         SetCookie("usrin", JSON.stringify(data));
       }
-      window.location.href = "/";
+      notify1("Successfully logged in");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
     } else {
-      setError("Credentials error");
+      notify("Credentials error");
     }
     return false;
   }
@@ -72,19 +90,17 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="row" style={{ backgroundColor: "steelblue" }}>
-        <div className="col-md-3"></div>
+      <div className="row bg-light d-flex justify-content-center">
+        <ToastContainer />
         <div className="col-md-6">
           <div className="container">
             <div className="mx-4">
               <div className="text-center py-3">
-                <h3 className={classes.font} style={{ color: "white" }}>
-                  Sign In
-                </h3>
+                <h3 className={classes.font}>Sign In</h3>
               </div>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="container border shadow p-4 bg-white"
+                className="container shadow-sm p-4 bg-white"
               >
                 <div className="mb-2">
                   <label className={classes.label}>Email</label>
@@ -143,7 +159,7 @@ const LoginPage = () => {
                 <p className={classes.pFont}></p>
                 <button className={classes.createBtn}>Login</button>
               </form>
-              <div className="bg-white container">
+              <div className="bg-white container shadow-sm">
                 <p className={classes.orOption}>OR</p>
                 <p className={classes.pFont}>
                   By clicking Sign up with Facebook or Sign up with Google, you
@@ -181,7 +197,7 @@ const LoginPage = () => {
               </div>
             </div>
             <div className="text-center my-5">
-              <p className={classes.font} style={{ color: "white" }}>
+              <p className={classes.font}>
                 Don't have an account ?
                 <Link href="/home/register">
                   <a style={{ color: "orange" }}>Sign up</a>
@@ -190,7 +206,6 @@ const LoginPage = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-3"></div>
       </div>
     </>
   );

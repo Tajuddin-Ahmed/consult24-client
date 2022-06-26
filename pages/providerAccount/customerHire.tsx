@@ -42,7 +42,7 @@ const CustomerHire = () => {
                         name=""
                         id=""
                         style={{ border: "1px solid lightgreen" }}
-                        cols={42}
+                        cols={53}
                         maxLength={40}
                         placeholder="Introduce yourself and your business"
                         rows={5}

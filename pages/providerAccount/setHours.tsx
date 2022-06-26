@@ -110,12 +110,9 @@ const SetHours = () => {
                         </div>
                       </div>
                       <div className="text-center mt-3">
-                        <a
-                          href="/providerAccount/editTimes"
-                          className="text-info "
-                        >
-                          Edit Times
-                        </a>
+                        <Link href="/providerAccount/editTimes">
+                          <a className="text-info ">Edit Times</a>
+                        </Link>
                       </div>
                     </div>
                   </div>

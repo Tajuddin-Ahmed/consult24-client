@@ -13,7 +13,8 @@ const SelectJob = () => {
   const [isChecked, setIsChecked] = useState(false);
   const user: any = useContext(AppContext);
   const router = useRouter();
-  const { serviceName, location } = router.query;
+  const data = router.query;
+  console.log(data);
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
     setIsChecked(true);
@@ -29,16 +30,19 @@ const SelectJob = () => {
     }
   };
   const checkboxOptions = [
-    { key: "House Cleaning", value: "flexCheckDefault1" },
-    { key: "Photo Booth Rental", value: "flexCheckDefault2" },
-    { key: "Wedding and Event Decorating", value: "flexCheckDefault3" },
-    { key: "Event Planning", value: "flexCheckDefault4" },
-    { key: "Wedding Florist", value: "flexCheckDefault5" },
-    { key: "Wedding Coordination", value: "flexCheckDefault6" },
-    { key: "Balloon Decorations", value: "flexCheckDefault7" },
-    { key: "Wedding Planning", value: "flexCheckDefault8" },
-    { key: "Calligraphy", value: "flexCheckDefault9" },
-    { key: "Valet Parking", value: "flexCheckDefault10" },
+    { key: "House Cleaning", value: "House Cleaning" },
+    { key: "Photo Booth Rental", value: "Photo Booth Rental" },
+    {
+      key: "Wedding and Event Decorating",
+      value: "Wedding and Event Decorating",
+    },
+    { key: "Event Planning", value: "Event Planning" },
+    { key: "Wedding Florist", value: "Wedding Florist" },
+    { key: "Wedding Coordination", value: "Wedding Coordination" },
+    { key: "Balloon Decorations", value: "Balloon Decorations" },
+    { key: "Wedding Planning", value: "Wedding Planning" },
+    { key: "Calligraphy", value: "Calligraphy" },
+    { key: "Valet Parking", value: "Valet Parking" },
   ];
   const onSubmit = (values) => {
     if (user.username) {
@@ -47,14 +51,13 @@ const SelectJob = () => {
           pathname: "/providerAccount/businessAccount",
           query: {
             ...values,
-            serviceName: serviceName,
-            location: location,
+            ...data,
           },
         },
         "/providerAccount/businessAccount"
       );
     } else {
-      router.push("/home/register");
+      router.push("/providerAccount/providerSignUp");
     }
   };
   const initialValues = {
@@ -105,7 +108,6 @@ const SelectJob = () => {
                       control="checkbox"
                       name="checkboxOption"
                       options={checkboxOptions}
-                      isChecked={isChecked}
                     />
 
                     <button className="w-100 btn btn-info mt-3" type="submit">

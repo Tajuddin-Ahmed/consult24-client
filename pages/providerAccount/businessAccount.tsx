@@ -8,18 +8,18 @@ import * as Yup from "yup";
 const BusinessAccount = () => {
   const user: any = useContext(AppContext);
   const router = useRouter();
+  const data = router.query;
+  console.log(data);
   const onSubmit = (values) => {
     router.push(
       {
-        pathname: "/providerAccount/aboutYourself",
+        pathname: "/providerAccount/aboutBusiness",
         query: {
           ...values,
-          serviceName: router.query.serviceName,
-          location: router.query.location,
-          checkboxOption: router.query.checkboxOption,
+          ...data,
         },
       },
-      "/providerAccount/aboutYourself"
+      "/providerAccount/aboutBusiness"
     );
   };
   const initialValues = {

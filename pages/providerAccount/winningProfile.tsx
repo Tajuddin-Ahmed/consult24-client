@@ -1,14 +1,24 @@
-import Link from "next/link";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { FcSearch } from "react-icons/fc";
-import { GrLocation } from "react-icons/gr";
 import { IoMdArrowBack } from "react-icons/io";
 import { AppContext } from "../../components/_App/Navbar/Navigation";
 import cls from "./provider.module.css";
 const WinningProfile = () => {
   const user = useContext(AppContext);
   const router = useRouter();
+  const data = router.query;
+  console.log(data);
+  const handleNextBtn = () => {
+    router.push(
+      {
+        pathname: "/providerAccount/aboutBusiness",
+        query: {
+          ...data,
+        },
+      },
+      "/providerAccount/aboutBusiness"
+    );
+  };
 
   return (
     <>
@@ -71,9 +81,8 @@ const WinningProfile = () => {
                   </div>
                   <button
                     className="w-100 btn btn-info mt-3"
-                    onClick={() =>
-                      router.push("/providerAccount/aboutBusiness")
-                    }
+                    type="button"
+                    onClick={handleNextBtn}
                   >
                     Next
                   </button>

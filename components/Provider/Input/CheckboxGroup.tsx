@@ -3,12 +3,15 @@ import { Field, ErrorMessage } from "formik";
 import cls from "../../../pages/providerAccount/provider.module.css";
 
 function CheckboxGroup(props) {
-  const { name, isChecked, options, ...rest } = props;
-  console.log("Ischecked", isChecked);
+  const { name, options, ...rest } = props;
+  let isCheck = false;
   return (
     <div>
       <Field name={name}>
         {({ field }) => {
+          if (field.value.includes("all")) {
+            isCheck = true;
+          }
           return options.map((option) => {
             return (
               <React.Fragment key={option.key}>
@@ -20,7 +23,9 @@ function CheckboxGroup(props) {
                     {...field}
                     {...rest}
                     value={option.value}
-                    checked={field.value.includes(option.value)}
+                    checked={
+                      isCheck ? isCheck : field.value.includes(option.value)
+                    }
                   />
                   <label
                     className={`form-check-label ${cls.font}`}
@@ -34,9 +39,6 @@ function CheckboxGroup(props) {
           });
         }}
       </Field>
-      <ErrorMessage name={name}>
-        {(errMsg) => <div className="text-danger mb-2">{errMsg}</div>}
-      </ErrorMessage>
     </div>
   );
 }

@@ -1,95 +1,96 @@
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-
+import { AppContext } from "../../components/_App/Navbar/Navigation";
+import { BeatLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Profile = () => {
   const [image, setImage] = useState(null);
   const [updated, setUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageId, setImageId] = useState();
+  const [customerInfo, setCustomerInfo]: any = useState({});
   const router = useRouter();
-  const userid: any = router.query.id;
-
+  const user: any = useContext(AppContext);
+  const loaderCss = css`
+    margin-left: 45%;
+    margin-right: 45%;
+  `;
+  const notify = (message) => {
+    toast.success(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 1000,
+    });
+  };
+  const notify1 = (message) => {
+    toast.error(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 2000,
+    });
+  };
   useEffect(() => {
     setLoading(true);
-    console.log(image);
-    const getImageId = async () => {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Token " + localStorage.getItem("token"),
-        },
-      };
-      try {
-        const res = await axios.get(
-          "https://c24apidev.accelx.net/auth_api/CustomerProfilePicture/",
-          config
-        );
-        if (res.status === 200) {
-          const count = await res.data.count;
-          const id = await res.data.results[count - 1].id;
-          setImageId(id);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    getImageId();
-    console.log(imageId);
-    const fetchData = async () => {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Token " + localStorage.getItem("token"),
-        },
-      };
-      try {
-        const res = await axios.get(
-          `https://c24apidev.accelx.net/auth_api/profile_picture/${imageId}`,
-          config
-        );
-        setImage(res.data.profile_picture);
-        setLoading(false);
-      } catch (error) {}
-    };
-    fetchData();
-  }, [updated, imageId]);
-
-  //  START UPLOAD PHOTO
-  const onFileChange = async (e) => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
     const config = {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
+        "Content-type": "application/json",
         Authorization: "Token " + localStorage.getItem("token"),
       },
     };
-    let formData = new FormData();
-    formData.append("profile_picture", e.target.files[0]);
-    formData.append("uploaded_user", userid);
-    const body = formData;
-
-    try {
-      const res = await axios.post(
-        "https://c24apidev.accelx.net/auth_api/profile_picture/",
-        body,
-        config
-      );
-      if (res.status === 201) {
-        localStorage.setItem("imageId", res.data.id);
-        setImage(res.data.profile_picture);
-        setUpdated(!updated);
+    const getCustomerInfo = async () => {
+      if (user?.id) {
+        try {
+          const res = await axios.get(
+            `https://c24apidev.accelx.net/auth_api/customer_profile/${user?.id}`,
+            config
+          );
+          if (res.status === 200) {
+            console.log(res.data);
+            setCustomerInfo(res.data);
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
       }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-  //  END UPLOAD PHOTO
+    };
+    getCustomerInfo();
+    const getImageId = async () => {
+      if (user?.id) {
+        try {
+          const res = await axios.get(
+            `https://c24apidev.accelx.net/auth_api/CustomerProfilePicture/?user_id=${user?.id}`,
+            config
+          );
+          if (res.status === 200) {
+            const count = await res.data.length;
+            const id = await res.data[count - 1].id;
+            setImageId(id);
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    };
+    getImageId();
+    const fetchData = async () => {
+      if (imageId) {
+        try {
+          const res = await axios.get(
+            `https://c24apidev.accelx.net/auth_api/profile_picture/${imageId}`,
+            config
+          );
+          setImage(res.data.profile_picture);
+        } catch (error) {}
+      }
+    };
+    fetchData();
+  }, [updated, imageId, user?.id]);
 
   //  START UPDATE PHOTO
 
@@ -103,7 +104,7 @@ const Profile = () => {
     };
     let formData = new FormData();
     formData.append("profile_picture", e.target.files[0]);
-    formData.append("uploaded_user", userid);
+    formData.append("uploaded_user", user?.id);
     const body = formData;
 
     try {
@@ -115,9 +116,10 @@ const Profile = () => {
       if (res.status === 200) {
         setImage(res.data.profile_picture);
         setUpdated(!updated);
+        notify("Profile picture updated successfully");
       }
     } catch (error) {
-      console.log(error.message);
+      notify1(error.message);
     }
   };
 
@@ -140,98 +142,102 @@ const Profile = () => {
     zipCode: Yup.string().required("zipCode is required"),
   });
 
-  // END FORM VALIDATION
-  const formOptions = { resolver: yupResolver(validationSchema) };
-  const { register, handleSubmit, reset, formState } = useForm(formOptions);
-  const { errors } = formState;
+  const initialValues = {
+    firstName: customerInfo?.user?.first_name,
+    middleName: customerInfo?.user?.middle_name,
+    lastName: customerInfo?.user?.last_name,
+    country: customerInfo?.address?.[0].country,
+    state: customerInfo?.address?.[0].state,
+    city: customerInfo?.address?.[0].city,
+    zipCode: customerInfo?.address?.[0].zip_code,
+    address: customerInfo?.address?.[0].street_address,
+    gender: customerInfo?.user?.gender,
+    phone: customerInfo?.user?.phone_number,
+    apartment: customerInfo?.address?.[0].apt,
+    payToMethod: customerInfo?.user?.payment_to_method,
+    payFromMethod: customerInfo?.user?.payment_from_method,
+  };
 
-  async function onSubmit(data) {
-    try {
-      const response = await fetch(
-        `https://c24apidev.accelx.net/auth_api/customer_profile/${userid}`,
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            first_name: data.firstName,
-            middle_name: data.middleName,
-            last_name: data.lastName,
-            phone_number: data.phone,
-            gender: data.gender,
-            online_status: data.onlineStatus,
-            activity_status: data.activityStatus,
-            account_status: data.accountStatus,
-            payment_to_method: data.payToMethod,
-            payment_from_method: data.payFromMethod,
-            avg_rating: data.avgRating,
-            lifetime_service_count: data.lsCount,
-            positive_review_id: data.pReviewId,
-            nagetive_review_id: data.nReviewId,
-            street_address: data.address,
-            apt: data.apartment,
-            zip_code: data.zipCode,
-            city: data.city,
-            state: data.state,
-            country: data.country,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Token " + localStorage.getItem("token"),
-          },
+  const onSubmit = async (data) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + localStorage.getItem("token"),
+      },
+    };
+    const body = JSON.stringify({
+      first_name: data.firstName,
+      middle_name: data.middleName,
+      last_name: data.lastName,
+      phone_number: data.phone,
+      gender: data.gender,
+      online_status: "True",
+      activity_status: "True",
+      account_status: "Active",
+      payment_to_method: data.payToMethod,
+      payment_from_method: data.payFromMethod,
+      avg_rating: null,
+      lifetime_service_count: null,
+      positive_review_id: null,
+      nagetive_review_id: null,
+      street_address: data.address,
+      apt: data.apartment,
+      zip_code: data.zipCode,
+      city: data.city,
+      state: data.state,
+      country: data.country,
+    });
+    if (user?.id) {
+      try {
+        const res = await axios.put(
+          `https://c24apidev.accelx.net/auth_api/customer_profile/${user?.id}`,
+          body,
+          config
+        );
+        if (res.status === 201) {
+          notify("Successfully updated");
+          setTimeout(() => {
+            router.push("/users/userInfo");
+          }, 2000);
         }
-      );
-
-      const resData = await response.json();
-      console.log("Successfully updated");
-    } catch (error) {
-      console.log(error.message);
+      } catch (error) {
+        notify1(error.message);
+      }
     }
-  }
+  };
   return (
-    <>
-      <div className="main-content d-flex flex-column">
-        <div className="breadcrumb-area">
-          <h1>My Profile</h1>
-          <ol className="breadcrumb">
-            <li className="item">
-              <Link href="/dashboard">
-                <a>Home</a>
-              </Link>
-            </li>
-            <li className="item">My Profile</li>
-          </ol>
-        </div>
+    <Formik
+      enableReinitialize={true}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+    >
+      <div className="row d-flex justify-content-center">
+        <ToastContainer />
+        <div className="col-md-9 col-lg-9 col-12 bg-light p-4">
+          {loading ? (
+            <BeatLoader loading css={loaderCss} size={15} />
+          ) : (
+            <div className="my-profile-box">
+              <h3>Profile Details</h3>
 
-        <div>
-          <div className="my-profile-box">
-            <h3>Profile Details</h3>
-
-            {/* START UPLOAD PROFILE  */}
-            <div className="row">
-              <div className="col-lg-12 col-md-12">
-                <div className="form-group profile-box">
-                  {image ? (
-                    <img src={image} width={400} height={400} alt="image" />
-                  ) : (
-                    <img src="/images/user1.jpg" alt="image" />
-                  )}
-
-                  {!image ? (
-                    <div className="file-upload">
-                      <input
-                        type="file"
-                        id="file"
-                        name="image"
-                        className="inputfile"
-                        onChange={onFileChange}
+              {/* START UPLOAD PROFILE  */}
+              <div className="row">
+                <div className="col-lg-12 col-md-12">
+                  <div className="form-group profile-box">
+                    {image ? (
+                      <img
+                        src={image}
+                        width={400}
+                        height={400}
+                        className="ms-4"
+                        alt="image"
                       />
-                      <label htmlFor="file">
-                        <i className="bx bx-upload"></i>
-                        Upload Photo
-                      </label>
-                    </div>
-                  ) : (
-                    <div className="file-upload">
-                      <input
+                    ) : (
+                      <img src="/images/user1.jpg" alt="image" />
+                    )}
+                    <div className="file-upload ms-4">
+                      <Field
                         type="file"
                         id="file"
                         name="image"
@@ -243,369 +249,247 @@ const Profile = () => {
                         Change
                       </label>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
+              {/* END UPLOAD PROFILE */}
+
+              <Form className="d-flex">
+                <div className="row">
+                  <div className="col-lg-6 col-md-12">
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12">
+                        <div className="row">
+                          <h6>Address</h6>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label>Country</label>
+                              <Field
+                                type="text"
+                                name="country"
+                                className={`form-control`}
+                              />
+                              <ErrorMessage name="country">
+                                {(errMsg) => (
+                                  <div className="text-danger mb-2">
+                                    {errMsg}
+                                  </div>
+                                )}
+                              </ErrorMessage>
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label>State</label>
+                              <Field
+                                type="text"
+                                name="state"
+                                className={`form-control`}
+                              />
+                              <ErrorMessage name="state">
+                                {(errMsg) => (
+                                  <div className="text-danger mb-2">
+                                    {errMsg}
+                                  </div>
+                                )}
+                              </ErrorMessage>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label>City</label>
+                              <Field
+                                type="text"
+                                name="city"
+                                className={`form-control`}
+                              />
+                              <ErrorMessage name="city">
+                                {(errMsg) => (
+                                  <div className="text-danger mb-2">
+                                    {errMsg}
+                                  </div>
+                                )}
+                              </ErrorMessage>
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label> Zip Code </label>
+                              <Field
+                                type="text"
+                                name="zipCode"
+                                className={`form-control`}
+                              />
+                              <ErrorMessage name="zipCode">
+                                {(errMsg) => (
+                                  <div className="text-danger mb-2">
+                                    {errMsg}
+                                  </div>
+                                )}
+                              </ErrorMessage>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <label>Street Address</label>
+                              <Field
+                                type="text"
+                                name="address"
+                                className={`form-control`}
+                              />
+                              <ErrorMessage name="address">
+                                {(errMsg) => (
+                                  <div className="text-danger mb-2">
+                                    {errMsg}
+                                  </div>
+                                )}
+                              </ErrorMessage>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-lg-6 col-md-12">
+                    <div className="row">
+                      <h6>About</h6>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>First Name</label>
+                          <Field
+                            type="text"
+                            name="firstName"
+                            className={`form-control `}
+                          />
+                          <ErrorMessage name="firstName">
+                            {(errMsg) => (
+                              <div className="text-danger mb-2">{errMsg}</div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label> Middle Name</label>
+                          <Field
+                            type="text"
+                            name="middleName"
+                            className="form-control"
+                          />
+                          <ErrorMessage name="middleName">
+                            {(errMsg) => (
+                              <div className="text-danger mb-2">{errMsg}</div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label> Last Name</label>
+                          <Field
+                            type="text"
+                            name="lastName"
+                            className={`form-control`}
+                          />
+                          <ErrorMessage name="lastName">
+                            {(errMsg) => (
+                              <div className="text-danger mb-2">{errMsg}</div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Gender</label>
+                          <Field
+                            type="text"
+                            name="gender"
+                            className={`form-control`}
+                          />
+
+                          <ErrorMessage name="gender">
+                            {(errMsg) => (
+                              <div className="text-danger mb-2">{errMsg}</div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Phone</label>
+                          <Field
+                            type="text"
+                            name="phone"
+                            className={`form-control`}
+                          />
+                          <ErrorMessage name="phone">
+                            {(errMsg) => (
+                              <div className="text-danger mb-2">{errMsg}</div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Apartment</label>
+                          <Field
+                            type="text"
+                            name="apartment"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <h6>Payment Method</h6>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label> Payment to method </label>
+                          <Field
+                            type="text"
+                            name="payToMethod"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label> Payment from method </label>
+                          <Field
+                            type="text"
+                            name="payFromMethod"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="form-group">
+                          <button type="submit">Save Changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Form>
             </div>
-            {/* END UPLOAD PROFILE */}
-
-            <form className="d-flex" onSubmit={handleSubmit(onSubmit)}>
-              <div className="row">
-                <div className="col-lg-6 col-md-12">
-                  <div className="row">
-                    <div className="col-lg-12 col-md-12">
-                      <div className="row">
-                        <h6>Address</h6>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Country</label>
-                            <input
-                              type="text"
-                              {...register("country")}
-                              className={`form-control ${
-                                errors.country ? "is-invalid" : ""
-                              }`}
-                            />
-                            <div className="invalid-feedback">
-                              {errors.country?.message}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>State</label>
-                            <select
-                              name="state"
-                              {...register("state")}
-                              className={`form-control ${
-                                errors.state ? "is-invalid" : ""
-                              }`}
-                            >
-                              <option value="">Select one</option>
-                              <option value="AL">AL</option>
-                              <option value="AK">AK</option>
-                              <option value="AZ">AZ</option>
-                              <option value="AR">AR</option>
-                              <option value="CA">CA</option>
-                              <option value="CO">CO</option>
-                              <option value="CT">CT</option>
-                              <option value="DE">DE</option>
-                              <option value="FL">FL</option>
-                              <option value="GA">GA</option>
-                              <option value="HI">HI</option>
-                              <option value="ID">ID</option>
-                              <option value="IL">IL</option>
-                              <option value="IN">IN</option>
-                              <option value="IA">IA</option>
-                              <option value="KS">KS</option>
-                            </select>
-                            <div className="invalid-feedback">
-                              {errors.state?.message}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>City</label>
-                            <input
-                              type="text"
-                              {...register("city")}
-                              className={`form-control ${
-                                errors.city ? "is-invalid" : ""
-                              }`}
-                            />
-                            <div className="invalid-feedback">
-                              {errors.city?.message}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label> Zip Code </label>
-                            <input
-                              type="text"
-                              {...register("zipCode")}
-                              className={`form-control ${
-                                errors.zipCode ? "is-invalid" : ""
-                              }`}
-                            />
-                            <div className="invalid-feedback">
-                              {errors.zipCode?.message}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label>Street Address</label>
-                            <input
-                              type="text"
-                              {...register("address")}
-                              className={`form-control ${
-                                errors.address ? "is-invalid" : ""
-                              }`}
-                            />
-                            <div className="invalid-feedback">
-                              {errors.address?.message}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* START HIDDEN FIELD  */}
-                    {/* <div className="d-none col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>User Name</label>
-                        <input
-                          type="text"
-                          {...register("username")}
-                          className="form-control"
-                          value={user?.username}
-                        />
-                      </div>
-                    </div> */}
-                    {/* <div className="d-none col-xl-6 col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>Email</label>
-                        <input
-                          type="email"
-                          {...register("email")}
-                          className="form-control"
-                          value={user?.email}
-                        />
-                      </div>
-                    </div> */}
-                    <div className="d-none col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>Online status</label>
-                        <input
-                          type="text"
-                          {...register("onlineStatus")}
-                          className="form-control"
-                          value="True"
-                        />
-                      </div>
-                    </div>
-                    <div className="d-none col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>Activity status</label>
-                        <input
-                          type="text"
-                          {...register("activityStatus")}
-                          className="form-control"
-                          value="True"
-                        />
-                      </div>
-                    </div>
-                    <div className="d-none col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>Account status</label>
-                        <input
-                          type="text"
-                          {...register("accountStatus")}
-                          className="form-control"
-                          value="Active"
-                        />
-                      </div>
-                    </div>
-                    <div className="d-none col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>Avg Rating</label>
-                        <input
-                          type="text"
-                          {...register("avgRating")}
-                          className="form-control"
-                          value="null"
-                        />
-                      </div>
-                    </div>
-                    <div className="d-none col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>Lifetime service count</label>
-                        <input
-                          type="text"
-                          {...register("lsCount")}
-                          className="form-control"
-                          value="null"
-                        />
-                      </div>
-                    </div>
-                    <div className="d-none col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>Positive review id</label>
-                        <input
-                          type="text"
-                          {...register("pReviewId")}
-                          className="form-control"
-                          value="null"
-                        />
-                      </div>
-                    </div>
-                    <div className="d-none col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>negative review id</label>
-                        <input
-                          type="text"
-                          {...register("nReviewId")}
-                          className="form-control"
-                          value="null"
-                        />
-                      </div>
-                    </div>
-                    {/* <div className="d-none col-lg-12 col-md-12">
-                      <div className="form-group">
-                        <label>Preferred Provider list</label>
-                        <input
-                          type="text"
-                          {...register("pProviderList")}
-                          className="form-control"
-                          value="null"
-                        />
-                      </div>
-                    </div> */}
-                    {/* START HIDDEN FIELD  */}
-                  </div>
-                </div>
-
-                <div className="col-lg-6 col-md-12">
-                  <div className="row">
-                    <h6>About</h6>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>First Name</label>
-                        <input
-                          type="text"
-                          {...register("firstName")}
-                          className={`form-control ${
-                            errors.firstName ? "is-invalid" : ""
-                          }`}
-                        />
-                        <div className="invalid-feedback">
-                          {errors.firstName?.message}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label> Middle Name</label>
-                        <input
-                          type="text"
-                          {...register("middleName")}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label> Last Name</label>
-                        <input
-                          type="text"
-                          {...register("lastName")}
-                          className={`form-control ${
-                            errors.lastName ? "is-invalid" : ""
-                          }`}
-                        />
-                        <div className="invalid-feedback">
-                          {errors.lastName?.message}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Gender</label>
-                        <select
-                          name="state"
-                          {...register("gender")}
-                          className={`form-control ${
-                            errors.gender ? "is-invalid" : ""
-                          }`}
-                        >
-                          <option value="">Select one</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                          <option value="other">Other</option>
-                        </select>
-                        <div className="invalid-feedback">
-                          {errors.gender?.message}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Phone</label>
-                        <input
-                          type="text"
-                          {...register("phone")}
-                          className={`form-control ${
-                            errors.phone ? "is-invalid" : ""
-                          }`}
-                        />
-                        <div className="invalid-feedback">
-                          {errors.phone?.message}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Apartment</label>
-                        <input
-                          type="text"
-                          {...register("apartment")}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <h6>Payment Method</h6>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label> Payment to method </label>
-                        <input
-                          type="text"
-                          {...register("payToMethod")}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label> Payment from method </label>
-                        <input
-                          type="text"
-                          {...register("payFromMethod")}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="form-group">
-                        <button type="submit">Save Changes</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+          )}
         </div>
-
-        {/* <div className="flex-grow-1"></div> */}
       </div>
-    </>
+    </Formik>
   );
 };
 

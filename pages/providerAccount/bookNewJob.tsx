@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { FcSearch } from "react-icons/fc";
 import { GrLocation } from "react-icons/gr";
-import cls from "./provider.module.css";
+import cls from "../providerAccount/provider.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 const BookNewJob = () => {

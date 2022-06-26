@@ -1,309 +1,252 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import classes from "../../components/_App/Navbar/Menu/register/register.module.css";
 import cls from "./profile.module.css";
+import {
+  FaAngleRight,
+  FaCalendarCheck,
+  FaFileInvoiceDollar,
+  FaMoneyBill,
+  FaUser,
+} from "react-icons/fa";
+import Link from "next/link";
+import { AppContext } from "../../components/_App/Navbar/Navigation";
+import { useContext } from "react";
+import { IoIosArrowForward } from "react-icons/io";
+import { GoInbox } from "react-icons/go";
+import { FcSettings } from "react-icons/fc";
 const Settings = () => {
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .required("First Name is required")
-      .matches(/^[a-zA-Z ]{2,30}$/, "Enter valid first name"),
-    lastName: Yup.string()
-      .required("Last name is required")
-      .matches(/^[a-zA-Z ]{2,30}$/, "Enter valid last name"),
-
-    email: Yup.string().required("Email is required").email("Email is invalid"),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
-  });
-  const formOptions = { resolver: yupResolver(validationSchema) };
-
-  // get functions to build form with useForm() hook
-  const { register, handleSubmit, reset, formState } = useForm(formOptions);
-  const { errors } = formState;
-  async function onSubmit(data) {
-    // display form data on success
-    if (data) {
-    }
-  }
+  const user: any = useContext(AppContext);
   return (
     <>
-      <h6 className={`text-white ${cls.font}`}> Account Settings</h6>
-      <div className="row d-flex justify-content-center">
-        <div className="col-md-12">
-          <form
-            className="container bg-white p-3 shadow rounded"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <h6>Personal Data</h6>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="mb-2">
-                  <label className={`${classes.label} fw-normal`}>
-                    First Name
-                  </label>
-                  <br />
-                  <input
-                    name="phone"
-                    type="text"
-                    {...register("email")}
-                    className={`${classes.inputStyle} ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
-                  />
-                  <div className="invalid-feedback">
-                    {errors.email?.message}
+      {" "}
+      <div className="row">
+        <div className="col-md-3 col-lg-3 col-12 p-2 bg-white shadow-sm">
+          <ul className="list-unstyled">
+            <li className="list-group-item">
+              <Link href={`/users/profile/${user.id}`}>
+                <a>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <p
+                      style={{
+                        margin: "0",
+                        padding: "0",
+                      }}
+                    >
+                      <span className="me-2 fs-6">
+                        <FaCalendarCheck className="text-info" />
+                      </span>
+                      Appointments
+                    </p>
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <IoIosArrowForward />
+                    </p>
                   </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="mb-2">
-                  <label className={`${classes.label} fw-normal`}>
-                    Last Name
-                  </label>
-                  <br />
-                  <input
-                    name="phone"
-                    type="text"
-                    {...register("email")}
-                    className={`${classes.inputStyle} ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
-                  />
-                  <div className="invalid-feedback">
-                    {errors.email?.message}
+                </a>
+              </Link>
+            </li>
+            <li className="list-group-item">
+              <Link href="/users/invoicing">
+                <a>
+                  <div className="d-flex justify-content-between">
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <span className="me-2 fs-6">
+                        <FaFileInvoiceDollar className="text-info" />
+                      </span>
+                      Invoicing
+                    </p>
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <IoIosArrowForward />
+                    </p>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group col">
-                <input
-                  type="hidden"
-                  name="role"
-                  {...register("role")}
-                  value="2"
-                />
-              </div>
-            </div>
-            <div className="mb-2">
-              <label className={`${classes.label} fw-normal`}>
-                Phone Number
-              </label>
-              <br />
-              <input
-                name="phone"
-                type="text"
-                {...register("email")}
-                className={`${classes.inputStyle} ${
-                  errors.email ? "is-invalid" : ""
-                }`}
-              />
-              <div className="invalid-feedback">{errors.email?.message}</div>
-            </div>
-
-            <button type="submit" className={classes.createBtn}>
-              Save
-            </button>
-          </form>
+                </a>
+              </Link>
+            </li>
+            <li className="list-group-item">
+              <Link href="/users/userInfo">
+                <a>
+                  <div className="d-flex justify-content-between">
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <span className="me-2 fs-6">
+                        <FaUser className="text-info" />
+                      </span>
+                      User info
+                    </p>
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <IoIosArrowForward />
+                    </p>
+                  </div>
+                </a>
+              </Link>
+            </li>
+            <li className="list-group-item">
+              <Link href="/users/inbox">
+                <a>
+                  <div className="d-flex justify-content-between">
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <span className="me-2 fs-6">
+                        <GoInbox className="text-info" />
+                      </span>
+                      Inbox
+                    </p>
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <IoIosArrowForward />
+                    </p>
+                  </div>
+                </a>
+              </Link>
+            </li>
+            <li className="list-group-item">
+              <Link href="/users/bills">
+                <a>
+                  <div className="d-flex justify-content-between">
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <span className="me-2 fs-6">
+                        <FaMoneyBill className="text-info" />
+                      </span>
+                      Bills
+                    </p>
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <IoIosArrowForward />
+                    </p>
+                  </div>
+                </a>
+              </Link>
+            </li>
+            <li
+              className="list-group-item"
+              style={{ backgroundColor: "#FFFBC8" }}
+            >
+              <Link href="/users/settings">
+                <a>
+                  <div className="d-flex justify-content-between">
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <span className="me-2 fs-6">
+                        <FcSettings className="text-info" />
+                      </span>
+                      Settings
+                    </p>
+                    <p style={{ margin: "0", padding: "0" }}>
+                      <IoIosArrowForward />
+                    </p>
+                  </div>
+                </a>
+              </Link>
+            </li>
+          </ul>
         </div>
-      </div>
-      <div className="row mt-1 d-flex justify-content-center">
-        <div className="col-md-12">
-          <form
-            className="container bg-white p-3 rounded shadow"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <h6>Change Password</h6>
-
-            <div className="mb-2">
-              <label className={`${classes.label} fw-normal`}>
-                Confirm New Password
-              </label>
-              <br />
-              <input
-                name="phone"
-                type="text"
-                {...register("email")}
-                className={`${classes.inputStyle} ${
-                  errors.email ? "is-invalid" : ""
-                }`}
-              />
-              <div className="invalid-feedback">{errors.email?.message}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="mb-2">
-                  <label className={`${classes.label} fw-normal`}>
-                    Current Password
-                  </label>
-                  <br />
-                  <input
-                    name="phone"
-                    type="text"
-                    {...register("email")}
-                    className={`${classes.inputStyle} ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
-                  />
-                  <div className="invalid-feedback">
-                    {errors.email?.message}
-                  </div>
-                </div>
+        <div className="col-md-9 col-lg-9 col-12 bg-light p-2">
+          <div className="container">
+            <h6 className={`text-uppercase ${cls.font}`}>Account Settings</h6>
+            <div className="row d-flex justify-content-center">
+              <div className="col-md-12">
+                <ul className="list-group">
+                  <li className="list-group-item">
+                    <Link href="/users/edit/editPersonalInfo">
+                      <a>
+                        <div className="d-flex justify-content-between">
+                          <p style={{ margin: "0", padding: "0" }}>Name</p>
+                          <p style={{ margin: "0", padding: "0" }}>
+                            <FaAngleRight />
+                          </p>
+                        </div>
+                      </a>
+                    </Link>
+                  </li>
+                  <li className="list-group-item">
+                    <Link href="/users/edit/editPersonalInfo">
+                      <a>
+                        <div className="d-flex justify-content-between">
+                          <p style={{ margin: "0", padding: "0" }}>Email</p>
+                          <p style={{ margin: "0", padding: "0" }}>
+                            <FaAngleRight />
+                          </p>
+                        </div>
+                      </a>
+                    </Link>
+                  </li>
+                  <li className="list-group-item">
+                    <Link href="/users/edit/editPersonalInfo">
+                      <a>
+                        <div className="d-flex justify-content-between">
+                          <p style={{ margin: "0", padding: "0" }}>
+                            Phone Number
+                          </p>
+                          <p style={{ margin: "0", padding: "0" }}>
+                            <FaAngleRight />
+                          </p>
+                        </div>
+                      </a>
+                    </Link>
+                  </li>
+                  <li className="list-group-item">
+                    <Link href="/users/edit/editPassword">
+                      <a>
+                        <div className="d-flex justify-content-between">
+                          <p style={{ margin: "0", padding: "0" }}>Password</p>
+                          <p style={{ margin: "0", padding: "0" }}>
+                            <FaAngleRight />
+                          </p>
+                        </div>
+                      </a>
+                    </Link>
+                  </li>
+                  <li className="list-group-item">
+                    <Link href="/users/edit/editAddress">
+                      <a>
+                        <div className="d-flex justify-content-between">
+                          <p style={{ margin: "0", padding: "0" }}>Address</p>
+                          <p style={{ margin: "0", padding: "0" }}>
+                            <FaAngleRight />
+                          </p>
+                        </div>
+                      </a>
+                    </Link>
+                  </li>
+                </ul>
               </div>
-              <div className="col-md-6">
-                <div className="mb-2">
-                  <label className={`${classes.label} fw-normal`}>
-                    New Password
-                  </label>
-                  <br />
-                  <input
-                    name="phone"
-                    type="text"
-                    {...register("email")}
-                    className={`${classes.inputStyle} ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
-                  />
-                  <div className="invalid-feedback">
-                    {errors.email?.message}
-                  </div>
-                </div>
-              </div>
             </div>
-            <button type="submit" className={classes.createBtn}>
-              Save
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <div className="row d-flex justify-content-center">
-        <div className="col-md-12 mt-1">
-          <form
-            className="container bg-white p-3 shadow rounded"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <h6>Change Address</h6>
-
-            <div className="mb-2">
-              <label className={`${classes.label} fw-normal`}>
-                Street Address
-              </label>
-              <br />
-              <input
-                name="phone"
-                type="text"
-                {...register("email")}
-                className={`${classes.inputStyle} ${
-                  errors.email ? "is-invalid" : ""
-                }`}
-              />
-              <div className="invalid-feedback">{errors.email?.message}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="mb-2">
-                  <label className={`${classes.label} fw-normal`}>City</label>
-                  <br />
-                  <input
-                    name="phone"
-                    type="text"
-                    {...register("email")}
-                    className={`${classes.inputStyle} ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
-                  />
-                  <div className="invalid-feedback">
-                    {errors.email?.message}
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="mb-2">
-                  <label className={`${classes.label} fw-normal`}>
-                    Zip Code
-                  </label>
-                  <br />
-                  <input
-                    name="phone"
-                    type="text"
-                    {...register("email")}
-                    className={`${classes.inputStyle} ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
-                  />
-                  <div className="invalid-feedback">
-                    {errors.email?.message}
-                  </div>
-                </div>
+            <div className="row mt-1 d-flex justify-content-center">
+              <div className="col-md-12">
+                <h6 className={`text-uppercase my-2 ${cls.font}`}>
+                  Notification Settings
+                </h6>
+                <ul className="list-group">
+                  <li className="list-group-item">
+                    <a href="/users/notification">
+                      <div className="d-flex justify-content-between">
+                        <p style={{ margin: "0", padding: "0" }}>
+                          Notifications
+                        </p>
+                        <p style={{ margin: "0", padding: "0" }}>
+                          <FaAngleRight />
+                        </p>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
 
-            <button type="submit" className={classes.createBtn}>
-              Save
-            </button>
-          </form>
-        </div>
-      </div>
-      <div className="row d-flex justify-content-center">
-        <div className="col-md-12 mt-1">
-          <form
-            className="container bg-white p-3 shadow rounded"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <h6>Change Address</h6>
-
-            <div className="row">
-              <div className="col-md-6">
-                <div className="mb-2">
-                  <label className={`${classes.label} fw-normal`}>
-                    Current Email
-                  </label>
-                  <br />
-                  <input
-                    name="phone"
-                    type="text"
-                    {...register("email")}
-                    className={`${classes.inputStyle} ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
-                  />
-                  <div className="invalid-feedback">
-                    {errors.email?.message}
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="mb-2">
-                  <label className={`${classes.label} fw-normal`}>
-                    New Email
-                  </label>
-                  <br />
-                  <input
-                    name="phone"
-                    type="text"
-                    {...register("email")}
-                    className={`${classes.inputStyle} ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
-                  />
-                  <div className="invalid-feedback">
-                    {errors.email?.message}
-                  </div>
-                </div>
+            <div className="row mt-1 d-flex justify-content-center">
+              <div className="col-md-12">
+                <h6 className={`small my-2 text-muted ${cls.font}`}>
+                  ACCOUNT DELETE
+                </h6>
+                <ul className="list-group">
+                  <li className="list-group-item">
+                    <a href="">
+                      <div className="d-flex justify-content-between">
+                        <p style={{ margin: "0", padding: "0" }}>
+                          Deactive account
+                        </p>
+                        <p style={{ margin: "0", padding: "0" }}>
+                          <FaAngleRight />
+                        </p>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
-
-            <button type="submit" className={classes.createBtn}>
-              Save
-            </button>
-          </form>
+          </div>
         </div>
       </div>
     </>

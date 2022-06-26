@@ -3,7 +3,7 @@ import React from "react";
 const Footer = ({ bgColor }: { bgColor?: string }) => {
   return (
     <>
-      <footer className={`footer-area ${bgColor}`}>
+      <footer className={`footer-area ${bgColor}`} style={{ zIndex: 0 }}>
         <div className="container">
           <div className="row">
             <hr />

@@ -7,3 +7,7 @@
   background-color: steelblue;
   color: white;
 }
+.modalStyle {
+  max-width: 500px;
+  width: 100%;
+}

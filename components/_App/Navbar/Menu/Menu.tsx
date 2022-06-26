@@ -22,6 +22,7 @@ export default function Menu() {
                       pathname: "/search/searchByItem",
                       query: { item: subItem.name },
                     }}
+                    key={subItem.id}
                   >
                     <a key={subItem.id}>{subItem.name}</a>
                   </Link>

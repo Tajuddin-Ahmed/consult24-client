@@ -1,0 +1,8 @@
+.activity {
+  border-bottom: 3px solid #30eded;
+  font-weight: bold;
+}
+.fromActivity:hover {
+  border-bottom: 3px solid gray;
+  color: gray;
+}

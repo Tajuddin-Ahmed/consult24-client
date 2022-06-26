@@ -1,7 +1,6 @@
 import axios from "axios";
 // create user
 export async function createUser(
-  username: string,
   role: string,
   email: string,
   password: string,
@@ -9,7 +8,13 @@ export async function createUser(
 ) {
   const response = await fetch("https://c24apidev.accelx.net/auth/users/", {
     method: "POST",
-    body: JSON.stringify({ username, role, email, password, re_password }),
+    body: JSON.stringify({
+      username: email,
+      role: role,
+      email: email,
+      password: password,
+      re_password: re_password,
+    }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -44,20 +49,24 @@ export const loginToUser = async (userEmail: string, userPassword: string) => {
 // get user
 export async function getUser() {
   const token = localStorage.getItem("token");
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Token " + token,
+    },
+  };
   if (token) {
     try {
-      const response = await fetch(
+      const res = await axios.get(
         "https://c24apidev.accelx.net/auth/users/me/",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Token " + token,
-          },
-        }
+        config
       );
-      const data = await response.json();
-      return data;
-    } catch (error) {}
+      if (res.status === 200) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 }
 // logout

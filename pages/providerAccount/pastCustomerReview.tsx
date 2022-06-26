@@ -4,7 +4,6 @@ import router, { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { FcPlus, FcSearch } from "react-icons/fc";
-import { GrLocation } from "react-icons/gr";
 import { IoMdArrowBack } from "react-icons/io";
 import { AppContext } from "../../components/_App/Navbar/Navigation";
 import photo from "../../public/images/user4.jpg";
@@ -12,7 +11,7 @@ import cls from "./provider.module.css";
 const PastCustomerReview = () => {
   const user = useContext(AppContext);
   const router = useRouter();
-
+  console.log(router.query);
   return (
     <>
       <div className={`bg-light pt-3 pb-5 ${cls.bgImg}`}>

@@ -10,17 +10,30 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { createUser, loginToUser } from "../../../../hooks/createAndLogin";
+import ReCAPTCHA from "react-google-recaptcha";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // login to user
 
 const RegisterPage = () => {
   const [error, setError] = useState("");
   const router = useRouter();
+  const notify = (message) => {
+    toast.error(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 3000,
+    });
+  };
+  const notify1 = (message) => {
+    toast.success(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 2000,
+    });
+  };
+
   // form validation
   const validationSchema = Yup.object().shape({
-    username: Yup.string()
-      .required("User Name is required")
-      .matches(/^[a-zA-Z ]{2,30}$/, "Enter valid user name"),
     email: Yup.string().required("Email is required").email("Email is invalid"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
@@ -40,7 +53,6 @@ const RegisterPage = () => {
     if (data) {
       try {
         const result = await createUser(
-          data.username,
           data.role,
           data.email,
           data.password,
@@ -51,23 +63,29 @@ const RegisterPage = () => {
           const token = await loginToUser(data.email, data.password);
           console.log(token);
           if (token) {
+            notify1("Account created successfully");
             window.location.href = "/";
           }
         }
       } catch (error) {
-        setError("Email already exist or incorrect password matching");
+        notify("Email already exist or incorrect password matching");
       }
       return false;
     } else {
-      setError("Credentials Error");
+      notify("Credentials Error");
     }
   }
 
+  const HandleCaptchaOnchange = (value) => {
+    console.log("Captcha value:", value);
+  };
+
   return (
     <>
-      <div className="row" style={{ backgroundColor: "steelblue" }}>
+      <div className="row bg-light">
+        <ToastContainer />
         <div className="container">
-          <div className="container  my-5 shadow rounded bg-white d-flex">
+          <div className="container  my-5 shadow-sm border rounded bg-white d-flex">
             <div className="col-md-6">
               <div>
                 <form
@@ -77,21 +95,7 @@ const RegisterPage = () => {
                   <div>
                     <h3 className="pb-2">Sign Up</h3>
                   </div>
-                  <div className="mb-2">
-                    <label className={classes.label}>Username</label>
-                    <br />
-                    <input
-                      name="username"
-                      type="text"
-                      {...register("username")}
-                      className={`${classes.inputStyle} ${
-                        errors.username ? "is-invalid" : ""
-                      }`}
-                    />
-                    <div className="invalid-feedback">
-                      {errors.username?.message}
-                    </div>
-                  </div>
+
                   <div className="form-row">
                     <div className="form-group col">
                       <input
@@ -172,7 +176,13 @@ const RegisterPage = () => {
                       .
                     </span>
                   </p>
-                  <button type="submit" className={classes.createBtn}>
+
+                  <ReCAPTCHA
+                    sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                    onChange={() => HandleCaptchaOnchange}
+                  />
+
+                  <button type="submit" className={`mt-3 ${classes.createBtn}`}>
                     Create Account
                   </button>
                 </form>

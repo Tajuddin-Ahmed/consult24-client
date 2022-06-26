@@ -58,6 +58,7 @@
   border: none;
   border-right: 1px solid white;
   font-family: "Open Sans", sans-serif;
+  cursor: pointer;
 }
 .dropbtn:hover {
   border-bottom: 4px solid tomato;

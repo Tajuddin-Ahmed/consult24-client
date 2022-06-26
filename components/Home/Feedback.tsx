@@ -49,7 +49,7 @@ const Feedback = () => {
       <div className="feedback-area ptb-100 bg-f9f9f9">
         <div className="container">
           <div className="section-title">
-            <h2>User’s Feedback About Us</h2>
+            <h2 className="text-uppercase">User’s Feedback About Us</h2>
           </div>
 
           <div className="feedback-slides owl-theme">

@@ -1,4 +1,7 @@
+import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import {
   AiOutlineDollar,
   AiOutlineQuestionCircle,
@@ -8,7 +11,60 @@ import { BsFillTrophyFill } from "react-icons/bs";
 import { FaRegComment, FaSearch, FaStar } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import cls from "../providerAccount/provider.module.css";
+import { BeatLoader } from "react-spinners";
+import { css } from "@emotion/react";
 const SearchResult = () => {
+  const [data, setData] = useState([]);
+  const [image, setImage] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const zipcode = router.query.zipcode;
+  const service = router.query.service;
+  const loaderCss = css`
+    margin-left: 45%;
+    margin-right: 45%;
+  `;
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const allSearchedResult = async () => {
+      try {
+        const res = await axios.get(
+          `https://c24apidev.accelx.net/api/SearchServiceList/?zip_code=${zipcode}&search=${service}`,
+          config
+        );
+        if (res.status === 200) {
+          console.log(res.data);
+          setData(res.data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    allSearchedResult();
+    const getServiceImage = async () => {
+      try {
+        const res = await axios.get(
+          "https://c24apidev.accelx.net/api/search_service_file_APIView/",
+          config
+        );
+        if (res.status === 200) {
+          console.log(res.data.results);
+          setImage(res.data.results);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getServiceImage();
+  }, [zipcode, service]);
   return (
     <>
       <div className="container">
@@ -364,458 +420,120 @@ const SearchResult = () => {
               </a>
             </div>
           </div>
+
           <div className="col-lg-9 col-md-9">
             <div className="container py-3">
               <h6 className="py-4">Hire these pros now with Instant Book</h6>
-              <div className="row mb-3">
-                <div className="col-lg-9 col-md-9">
-                  <div className="d-flex">
-                    <div className="pe-3">
-                      <Link href="/search/searchResult/provider1">
-                        <a>
-                          <img
-                            src="/images/user6.jpg"
-                            className="rounded"
-                            alt="Image"
-                          />
-                        </a>
-                      </Link>
-                    </div>
-                    <Link href="/search/provider/provider1">
-                      <a>
-                        <div>
-                          <h6>Lightning cleaning services</h6>
-                          <p
-                            style={{ margin: "0", padding: "0" }}
-                            className="small"
-                          >
-                            Very good 4.5
-                            <span>
-                              <FaStar />
-                            </span>
-                            <span>
-                              <FaStar />
-                            </span>
-                            <span>
-                              <FaStar />
-                            </span>
-                            <span>
-                              <FaStar />
-                            </span>
-                            <span>
-                              <FaStar />
-                            </span>
-                            <span>(277)</span>
-                          </p>
-                          <button className="btn btn-info btn-sm">
-                            Great value
-                          </button>
-                          <p
-                            style={{ margin: "0", padding: "0" }}
-                            className="small"
-                          >
-                            <span className="pe-2">
-                              <BsFillTrophyFill />
-                            </span>
-                            878 hires on Consult24
-                          </p>
-                          <p
-                            style={{ margin: "0", padding: "0" }}
-                            className="small"
-                          >
-                            <span className="pe-2">
-                              <GrLocation />
-                            </span>
-                            12 similar jobs done near you
-                          </p>
-                          <p className="small">
-                            <span className="pe-2">
-                              <FaRegComment />
-                            </span>
-                            Responds in about 28 min
-                          </p>
-                          <p className="ps-3 small">
-                            Hina A. says, "They were very professional and did a
-                            through cleaning. they are"
-                          </p>
-                          <p className="small">
-                            <span className="pe-1">
-                              <AiOutlineThunderbolt />
-                            </span>
-                            Intant Book availability for
-                            <span className="fw-bold"> Tue, May 10</span>
-                          </p>
+              {loading ? (
+                <BeatLoader loading css={loaderCss} size={20} />
+              ) : (
+                data.map((result) => (
+                  <div key={result.id} className="row mb-3">
+                    <div className="col-lg-9 col-md-9">
+                      <div className="d-flex">
+                        <div className="pe-3">
+                          {image?.map(
+                            (img) =>
+                              img.service === result.id && (
+                                <Link
+                                  key={img.id}
+                                  href={`/search/provider/provider1/${result.service_user}/${result.id}/${result.service_category}/${result.service_sub_category}`}
+                                >
+                                  <a>
+                                    <img
+                                      src={img.service_image}
+                                      className="rounded"
+                                      alt="Image"
+                                    />
+                                  </a>
+                                </Link>
+                              )
+                          )}
                         </div>
-                      </a>
-                    </Link>
-                  </div>
-                </div>
-                <div className="col-lg-3 col-md-3">
-                  <p
-                    className="fw-bold text-end"
-                    style={{ margin: "0", padding: "0" }}
-                  >
-                    $240
-                  </p>
-                  <p className="small text-end">estimated cost</p>
-                </div>
-              </div>
-              <div className="row mb-3">
-                <div className="col-lg-9 col-md-9">
-                  <div className="d-flex">
-                    <div className="pe-3">
-                      <a href="">
-                        <img
-                          src="/images/user7.jpg"
-                          className="rounded"
-                          alt="Image"
-                        />
-                      </a>
-                    </div>
-                    <a href="">
-                      <div>
-                        <h6>Lightning cleaning services</h6>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
+                        <Link
+                          href={`/search/provider/provider1/${result.service_user}/${result.id}/${result.service_category}/${result.service_sub_category}`}
                         >
-                          Very good 4.5
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>(277)</span>
-                        </p>
-                        <button className="btn btn-info btn-sm">
-                          Great value
-                        </button>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          <span className="pe-2">
-                            <BsFillTrophyFill />
-                          </span>
-                          878 hires on Consult24
-                        </p>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          <span className="pe-2">
-                            <GrLocation />
-                          </span>
-                          12 similar jobs done near you
-                        </p>
-                        <p className="small">
-                          <span className="pe-2">
-                            <FaRegComment />
-                          </span>
-                          Responds in about 28 min
-                        </p>
-                        <p className="ps-3 small">
-                          Hina A. says, "They were very professional and did a
-                          through cleaning. they are"
-                        </p>
-                        <p className="small">
-                          <span className="pe-1">
-                            <AiOutlineThunderbolt />
-                          </span>
-                          Intant Book availability for
-                          <span className="fw-bold"> Tue, May 10</span>
-                        </p>
+                          <a>
+                            <div>
+                              <h6>{result.service_name}</h6>
+                              <p
+                                style={{ margin: "0", padding: "0" }}
+                                className="small"
+                              >
+                                Very good 4.5
+                                <span>
+                                  <FaStar />
+                                </span>
+                                <span>
+                                  <FaStar />
+                                </span>
+                                <span>
+                                  <FaStar />
+                                </span>
+                                <span>
+                                  <FaStar />
+                                </span>
+                                <span>
+                                  <FaStar />
+                                </span>
+                                <span>(277)</span>
+                              </p>
+                              <button className="btn btn-info btn-sm">
+                                Great value
+                              </button>
+
+                              <p
+                                style={{ margin: "0", padding: "0" }}
+                                className="small"
+                              >
+                                <span className="pe-2">
+                                  <BsFillTrophyFill />
+                                </span>
+                                878 hires on Consult24
+                              </p>
+                              <p
+                                style={{ margin: "0", padding: "0" }}
+                                className="small"
+                              >
+                                <span className="pe-2">
+                                  <GrLocation />
+                                </span>
+                                12 similar jobs done near you
+                              </p>
+                              <p className="small">
+                                <span className="pe-2">
+                                  <FaRegComment />
+                                </span>
+                                Responds in about 28 min
+                              </p>
+                              <p className="ps-3 small">
+                                Hina A. says, "They were very professional and
+                                did a through cleaning. they are"
+                              </p>
+                              <p className="small">
+                                <span className="pe-1">
+                                  <AiOutlineThunderbolt />
+                                </span>
+                                Intant Book availability for
+                                <span className="fw-bold"> Tue, May 10</span>
+                              </p>
+                            </div>
+                          </a>
+                        </Link>
                       </div>
-                    </a>
-                  </div>
-                </div>
-                <div className="col-lg-3 col-md-3">
-                  <p
-                    className="fw-bold text-end"
-                    style={{ margin: "0", padding: "0" }}
-                  >
-                    $240
-                  </p>
-                  <p className="small text-end">estimated cost</p>
-                </div>
-              </div>
-              <div className="row mb-3">
-                <div className="col-lg-9 col-md-9">
-                  <div className="d-flex">
-                    <div className="pe-3">
-                      <a href="">
-                        <img
-                          src="/images/user8.jpg"
-                          className="rounded"
-                          alt="Image"
-                        />
-                      </a>
                     </div>
-                    <a href="">
-                      <div>
-                        <h6>Lightning cleaning services</h6>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          Very good 4.5
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>(277)</span>
-                        </p>
-                        <button className="btn btn-info btn-sm">
-                          Great value
-                        </button>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          <span className="pe-2">
-                            <BsFillTrophyFill />
-                          </span>
-                          878 hires on Consult24
-                        </p>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          <span className="pe-2">
-                            <GrLocation />
-                          </span>
-                          12 similar jobs done near you
-                        </p>
-                        <p className="small">
-                          <span className="pe-2">
-                            <FaRegComment />
-                          </span>
-                          Responds in about 28 min
-                        </p>
-                        <p className="ps-3 small">
-                          Hina A. says, "They were very professional and did a
-                          through cleaning. they are"
-                        </p>
-                        <p className="small">
-                          <span className="pe-1">
-                            <AiOutlineThunderbolt />
-                          </span>
-                          Intant Book availability for
-                          <span className="fw-bold"> Tue, May 10</span>
-                        </p>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-                <div className="col-lg-3 col-md-3">
-                  <p
-                    className="fw-bold text-end"
-                    style={{ margin: "0", padding: "0" }}
-                  >
-                    $240
-                  </p>
-                  <p className="small text-end">estimated cost</p>
-                </div>
-              </div>
-              <div className="row mb-3">
-                <div className="col-lg-9 col-md-9">
-                  <div className="d-flex">
-                    <div className="pe-3">
-                      <a href="">
-                        <img
-                          src="/images/user9.jpg"
-                          className="rounded"
-                          alt="Image"
-                        />
-                      </a>
+                    <div className="col-lg-3 col-md-3">
+                      <p
+                        className="fw-bold text-end"
+                        style={{ margin: "0", padding: "0" }}
+                      >
+                        $50
+                      </p>
+                      <p className="small text-end">estimated cost</p>
                     </div>
-                    <a href="">
-                      <div>
-                        <h6>Lightning cleaning services</h6>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          Very good 4.5
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>(277)</span>
-                        </p>
-                        <button className="btn btn-info btn-sm">
-                          Great value
-                        </button>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          <span className="pe-2">
-                            <BsFillTrophyFill />
-                          </span>
-                          878 hires on Consult24
-                        </p>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          <span className="pe-2">
-                            <GrLocation />
-                          </span>
-                          12 similar jobs done near you
-                        </p>
-                        <p className="small">
-                          <span className="pe-2">
-                            <FaRegComment />
-                          </span>
-                          Responds in about 28 min
-                        </p>
-                        <p className="ps-3 small">
-                          Hina A. says, "They were very professional and did a
-                          through cleaning. they are"
-                        </p>
-                        <p className="small">
-                          <span className="pe-1">
-                            <AiOutlineThunderbolt />
-                          </span>
-                          Intant Book availability for
-                          <span className="fw-bold"> Tue, May 10</span>
-                        </p>
-                      </div>
-                    </a>
                   </div>
-                </div>
-                <div className="col-lg-3 col-md-3">
-                  <p
-                    className="fw-bold text-end"
-                    style={{ margin: "0", padding: "0" }}
-                  >
-                    $240
-                  </p>
-                  <p className="small text-end">estimated cost</p>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-9 col-md-9">
-                  <div className="d-flex">
-                    <div className="pe-3">
-                      <a href="">
-                        <img
-                          src="/images/user10.jpg"
-                          className="rounded"
-                          alt="Image"
-                        />
-                      </a>
-                    </div>
-                    <a href="">
-                      <div>
-                        <h6>Lightning cleaning services</h6>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          Very good 4.5
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>
-                            <FaStar />
-                          </span>
-                          <span>(277)</span>
-                        </p>
-                        <button className="btn btn-info btn-sm">
-                          Great value
-                        </button>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          <span className="pe-2">
-                            <BsFillTrophyFill />
-                          </span>
-                          878 hires on Consult24
-                        </p>
-                        <p
-                          style={{ margin: "0", padding: "0" }}
-                          className="small"
-                        >
-                          <span className="pe-2">
-                            <GrLocation />
-                          </span>
-                          12 similar jobs done near you
-                        </p>
-                        <p className="small">
-                          <span className="pe-2">
-                            <FaRegComment />
-                          </span>
-                          Responds in about 28 min
-                        </p>
-                        <p className="ps-3 small">
-                          Hina A. says, "They were very professional and did a
-                          through cleaning. they are"
-                        </p>
-                        <p className="small">
-                          <span className="pe-1">
-                            <AiOutlineThunderbolt />
-                          </span>
-                          Intant Book availability for
-                          <span className="fw-bold"> Tue, May 10</span>
-                        </p>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-                <div className="col-lg-3 col-md-3">
-                  <p
-                    className="fw-bold text-end"
-                    style={{ margin: "0", padding: "0" }}
-                  >
-                    $240
-                  </p>
-                  <p className="small text-end">estimated cost</p>
-                </div>
-              </div>
+                ))
+              )}
             </div>
           </div>
         </div>

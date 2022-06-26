@@ -15,15 +15,17 @@ import "../public/css/tabStyle.css";
 import { AppContext } from "../components/_App/Navbar/Navigation";
 import { getUser } from "../components/hooks/createAndLogin";
 import { SessionProvider } from "next-auth/react";
-
+import Modal from "react-modal";
+Modal.setAppElement("#__next");
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+  const [a, setA] = useState();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
-      if (token === undefined || token === null) {
+      if (token === "undefined" || token === "null") {
         return;
       } else {
         const user = await getUser();

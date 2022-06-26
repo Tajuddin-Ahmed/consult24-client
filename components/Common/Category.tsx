@@ -27,7 +27,7 @@ const Category = () => {
       <section className="category-area pt-100 pb-0 bg-f5f5f5">
         <div className="container">
           <div className="section-title">
-            <h2>Popular topics</h2>
+            <h2 className="text-uppercase">Popular topics</h2>
           </div>
 
           <div className="row">

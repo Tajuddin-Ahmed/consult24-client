@@ -1,0 +1,8 @@
+.suggestions {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 2px;
+}
+.suggestions:hover {
+  background-color: lightblue;
+}
