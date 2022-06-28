@@ -10,10 +10,11 @@ import {
   AiOutlineRight,
   AiOutlineSearch,
   AiOutlineStar,
+  AiOutlineWarning,
 } from "react-icons/ai";
 import { BsFillTrophyFill, BsShieldFillCheck, BsWatch } from "react-icons/bs";
 import { FaRegComment, FaStar, FaUser } from "react-icons/fa";
-import { FiPhoneCall, FiShare, FiUsers, FiVideo } from "react-icons/fi";
+import { FiPhoneCall, FiSend, FiShare, FiUsers, FiVideo } from "react-icons/fi";
 import { GrAdd, GrLocation } from "react-icons/gr";
 import { AppContext } from "../../../components/_App/Navbar/Navigation";
 import cls from "../../providerAccount/provider.module.css";
@@ -38,6 +39,7 @@ const ProviderPage = () => {
   const [image, setImage]: any = useState({});
   const [isChecked, setIsChecked]: any = useState(false);
   const [messageModal, setMessageModal]: any = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const user: any = useContext(AppContext);
   const router = useRouter();
   const serviceUserId = router.query.providerPage?.[1];
@@ -132,6 +134,7 @@ const ProviderPage = () => {
             config
           );
           if (res.status === 200) {
+            console.log(res.data);
             setImage(res.data[0]);
           }
         } catch (error) {
@@ -231,7 +234,35 @@ const ProviderPage = () => {
       router.push("/home/login");
     }
   };
-  console.log(user?.id);
+  const cancelAppointment = async (id) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Token " + localStorage.getItem("token"),
+      },
+    };
+    const body = JSON.stringify({
+      cancel_time: new Date(),
+    });
+    if (id) {
+      try {
+        const res = await axios.patch(
+          `https://c24apidev.accelx.net/api/cancel_appointment/${id}`,
+          body,
+          config
+        );
+        if (res.status === 200) {
+          console.log(res.data);
+          notify("Appointment Canceled");
+          setUpdated(true);
+        }
+      } catch (error) {
+        console.log(error.message);
+        notify1("Something went wrong");
+      }
+    }
+  };
+
   return (
     <>
       <div id="about" className={`container ${cls.font}`}>
@@ -1085,7 +1116,7 @@ const ProviderPage = () => {
                         <td>{appointment.end_time}</td>
                         <td>{appointment.status}</td>
                         <td>
-                          {appointment.status !== "booked" ? (
+                          {appointment.status === "open" ? (
                             <button
                               className="btn btn-info btn-sm"
                               onClick={() =>
@@ -1099,16 +1130,12 @@ const ProviderPage = () => {
                             >
                               book now
                             </button>
+                          ) : appointment?.canceled_by ? (
+                            "canceled"
                           ) : (
                             <button
                               className="btn btn-danger btn-sm"
-                              // onClick={() =>
-                              //   handleAppBooking(
-                              //     appointment.id,
-                              //     appointment.start_time,
-                              //     appointment.end_time
-                              //   )
-                              // }
+                              onClick={() => setDeleteModal(appointment.id)}
                             >
                               Cancel
                             </button>
@@ -1144,55 +1171,180 @@ const ProviderPage = () => {
           }}
           onClose={() => setMessageModal(false)}
         >
-          <div className="bg-light mt-4 border">
-            <h6 className="text-white bg-primary ps-2">New Message</h6>
-            <div className="bg-light d-flex align-items-center p-3">
-              <label htmlFor="">To</label>
-              <input
-                type="text"
-                defaultValue={
-                  providerDetails?.user?.first_name +
-                  " " +
-                  providerDetails?.user?.middle_name +
-                  " " +
-                  providerDetails?.user?.last_name
-                }
-                disabled
-                style={{
-                  width: "80%",
-                  padding: "6px",
-                  border: "1px solid lightseagreen",
-                  borderRadius: "4px",
-                  marginLeft: "11%",
-                }}
-              />
-            </div>
-            <div className="bg-light d-flex align-items-center p-3">
-              <label htmlFor="">Message</label>
-              <textarea
-                cols={40}
-                rows={5}
-                style={{
-                  width: "80%",
-                  padding: "6px",
-                  border: "1px solid lightseagreen",
-                  borderRadius: "3px",
-                  marginLeft: "20px",
-                }}
-              />
-            </div>
+          <div className="row bg-light mt-4 p-2">
             <div
-              className="bg-light d-flex align-items-center p-3 flex-row-reverse"
-              style={{ marginRight: "6%" }}
+              className="col-md-12 col-lg-12 bg-white border overflow-auto"
+              style={{ height: "480px" }}
             >
-              <button
-                className="btn btn-warning btn-sm ms-2"
-                onClick={() => setMessageModal(false)}
-              >
-                Close
-              </button>
-              <button className="btn btn-primary btn-sm">Send</button>
+              <div className="d-flex border-bottom p-2">
+                <div className="me-2">
+                  <img
+                    src="/images/user6.jpg"
+                    width="40px"
+                    height="40px"
+                    alt=""
+                    className="rounded-circle"
+                  />
+                </div>
+                <div>
+                  <h6 style={{ margin: "0", padding: "0" }}>
+                    {providerDetails?.user?.first_name +
+                      " " +
+                      providerDetails?.user?.middle_name +
+                      " " +
+                      providerDetails?.user?.last_name}
+                  </h6>
+                  <p style={{ margin: "0", padding: "0" }}>Active now</p>
+                </div>
+              </div>
+              <div className="p-3">
+                <div className="d-flex py-2 w-100 align-items-center">
+                  <div className="me-3" style={{ width: "8%" }}>
+                    <img
+                      src="/images/user1.jpg"
+                      width="40px"
+                      height="40px"
+                      alt=""
+                      className="rounded-circle"
+                    />
+                  </div>
+                  <div
+                    className="bg-light rounded p-2"
+                    style={{ width: "92%" }}
+                  >
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Adipisci, qui optio doloremque nemo quae magni?
+                    </p>
+                  </div>
+                </div>
+                <div className="d-flex w-100 align-items-center">
+                  <div
+                    className="rounded p-2 me-3"
+                    style={{ width: "92%", backgroundColor: " #e6e6e6" }}
+                  >
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Adipisci, qui optio doloremque nemo quae magni?
+                    </p>
+                  </div>
+                  <div className="" style={{ width: "8%" }}>
+                    <img
+                      src="/images/user1.jpg"
+                      width="40px"
+                      height="40px"
+                      alt=""
+                      className="rounded-circle"
+                    />
+                  </div>
+                </div>
+                <div className="d-flex py-2 w-100 align-items-center">
+                  <div className="me-3" style={{ width: "8%" }}>
+                    <img
+                      src="/images/user1.jpg"
+                      width="40px"
+                      height="40px"
+                      alt=""
+                      className="rounded-circle"
+                    />
+                  </div>
+                  <div
+                    className="bg-light rounded p-2"
+                    style={{ width: "92%" }}
+                  >
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Adipisci, qui optio doloremque nemo quae magni?
+                    </p>
+                  </div>
+                </div>
+                <div className="d-flex w-100 align-items-center">
+                  <div
+                    className="rounded p-2 me-3"
+                    style={{ width: "92%", backgroundColor: " #e6e6e6" }}
+                  >
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Adipisci, qui optio doloremque nemo quae magni?
+                    </p>
+                  </div>
+                  <div className="" style={{ width: "8%" }}>
+                    <img
+                      src="/images/user1.jpg"
+                      width="40px"
+                      height="40px"
+                      alt=""
+                      className="rounded-circle"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="w-100 d-flex py-3">
+                <input
+                  type="text"
+                  style={{
+                    width: "83%",
+                    height: "36px",
+                    border: "none",
+                    borderBottom: "1px solid green",
+                    outline: "none",
+                  }}
+                  placeholder="Type here"
+                />
+                <button
+                  style={{
+                    width: "13%",
+                    border: "1px solid green",
+                    backgroundColor: "#009FD9",
+                    color: "white",
+                    borderRadius: "2px",
+                  }}
+                >
+                  Send <FiSend />
+                </button>
+              </div>
             </div>
+          </div>
+        </Modal>
+        <Modal
+          classNames={{ modal: `${cls.customModal}` }}
+          open={deleteModal}
+          onClose={() => setDeleteModal(false)}
+        >
+          <h5 className="mt-4">
+            Are you sure you want cancel this appointment?
+          </h5>
+          <h6 className="text-warning fs-2">
+            <AiOutlineWarning />
+          </h6>
+          <div
+            style={{
+              backgroundColor: "#f5aee5",
+              width: "50%",
+              padding: "8px",
+            }}
+          >
+            <ul>
+              <li>
+                Make sure you are canceling the appointment minimum one hour
+                before otherwise you will be fined
+              </li>
+            </ul>
+          </div>
+
+          <div className="mt-3">
+            <button
+              className="btn btn-primary btn-sm px-3"
+              onClick={() => setDeleteModal(false)}
+            >
+              No
+            </button>
+            <button
+              className="btn btn-danger ms-2 btn-sm px-3"
+              onClick={() => cancelAppointment(deleteModal)}
+            >
+              Yes
+            </button>
           </div>
         </Modal>
       </div>
