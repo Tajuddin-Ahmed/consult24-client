@@ -4,15 +4,20 @@ import classes from "./register.module.css";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
-import signup from "../../../../../public/images/claim-your-business.png";
+import signup from "../../../../../public/images/contact.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
-import { createUser, loginToUser } from "../../../../hooks/createAndLogin";
+import {
+  createUser,
+  createVideoAccount,
+  loginToUser,
+} from "../../../../hooks/createAndLogin";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 // login to user
 
@@ -50,6 +55,7 @@ const RegisterPage = () => {
 
   async function onSubmit(data) {
     // display form data on success
+
     if (data) {
       try {
         const result = await createUser(
@@ -59,17 +65,24 @@ const RegisterPage = () => {
           data.confirmPassword
         );
         console.log(result);
+        const videoToken = createVideoAccount(
+          data.email,
+          ["https://c24vconf.accelx.net"],
+          "https://c24vconf.accelx.net"
+        );
+        console.log(videoToken);
         if (result) {
           const token = await loginToUser(data.email, data.password);
           console.log(token);
           if (token) {
             notify1("Account created successfully");
-            window.location.href = "/";
+            // window.location.href = "/";
           }
         }
       } catch (error) {
         notify("Email already exist or incorrect password matching");
       }
+
       return false;
     } else {
       notify("Credentials Error");
@@ -86,10 +99,15 @@ const RegisterPage = () => {
         <ToastContainer />
         <div className="container">
           <div className="container  my-5 shadow-sm border rounded bg-white d-flex">
+            <div className="col-md-6 d-flex align-items-center">
+              <div className="container">
+                <Image src={signup} width={500} height={500} alt="image" />
+              </div>
+            </div>
             <div className="col-md-6">
               <div>
                 <form
-                  className="container border-end mt-4"
+                  className="container mt-4"
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   <div>
@@ -177,11 +195,6 @@ const RegisterPage = () => {
                     </span>
                   </p>
 
-                  <ReCAPTCHA
-                    sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                    onChange={() => HandleCaptchaOnchange}
-                  />
-
                   <button type="submit" className={`mt-3 ${classes.createBtn}`}>
                     Create Account
                   </button>
@@ -223,11 +236,6 @@ const RegisterPage = () => {
                     </a>
                   </p>
                 </div>
-              </div>
-            </div>
-            <div className="col-md-6 d-flex align-items-center">
-              <div className="container">
-                <Image src={signup} width={500} height={500} alt="image" />
               </div>
             </div>
           </div>

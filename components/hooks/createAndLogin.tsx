@@ -122,3 +122,34 @@ export const continueWithGoogle = async (state, code) => {
     }
   }
 };
+// VIDEO CALL ACCOUNT
+export const createVideoAccount = async (
+  name,
+  redirectURIs,
+  defaultRedirectURI
+) => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  const body = JSON.stringify({
+    name: name,
+    label: name,
+    redirectURIs: redirectURIs,
+    defaultRedirectURI: defaultRedirectURI,
+  });
+  try {
+    const res = await axios.post(
+      `https://c24apidev.accelx.net/videocall/create_account/`,
+      body,
+      config
+    );
+    if (res.status === 201) {
+      console.log(res.data);
+      return res.data;
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};

@@ -19,10 +19,10 @@
 }
 .createBtn {
   width: 100%;
-  background-color: steelblue;
+  background-color: #28bdbf;
   height: 42px;
   outline: none;
-  border: 1px solid steelblue;
+  border: 1px solid #28bdbf;
   border-radius: 3px;
   color: white;
   font-weight: bold;
@@ -43,7 +43,7 @@
 }
 .socialBtn:hover,
 .socialBtn:focus {
-  background-color: steelblue;
+  background-color: #28bdbf;
 }
 .iconFb {
   color: blue;
