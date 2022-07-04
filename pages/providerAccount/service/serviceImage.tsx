@@ -43,12 +43,12 @@ const ServiceImage = () => {
         console.log(res.data);
         router.push(
           {
-            pathname: "/providerAccount/addService",
+            pathname: "/providerAccount/service/serviceAvailability",
             query: {
               ...data,
             },
           },
-          "/providerAccount/addService"
+          "/providerAccount/service/serviceAvailability"
         );
       }
     } catch (error) {

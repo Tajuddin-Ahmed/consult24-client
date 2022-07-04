@@ -40,6 +40,8 @@ const ProviderPage = () => {
   const [isChecked, setIsChecked]: any = useState(false);
   const [messageModal, setMessageModal]: any = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [videoModal, setVideoModal] = useState(false);
+  const [videoToken, setVideoToken] = useState("");
   const user: any = useContext(AppContext);
   const router = useRouter();
   const serviceUserId = router.query.providerPage?.[1];
@@ -161,7 +163,27 @@ const ProviderPage = () => {
       }
     };
     getAppointmentList();
-  }, [serviceUserId, serviceId, selectedDay, updated]);
+    const getVideoToken = async () => {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Token " + localStorage.getItem("token"),
+        },
+      };
+      if (user?.id) {
+        try {
+          const res = await axios.get(
+            `https://c24apidev.accelx.net/api/UserIDWiseVideoCallingTokenListAPIView/?user_id=${user?.id}`,
+            config
+          );
+          if (res.status == 200) {
+            setVideoToken(res.data[0].token_store);
+          }
+        } catch (error) {}
+      }
+    };
+    getVideoToken();
+  }, [serviceUserId, serviceId, selectedDay, updated, user?.id]);
   const handlePreferredPro = async () => {
     if (token !== "null") {
       const config = {
@@ -262,7 +284,52 @@ const ProviderPage = () => {
       }
     }
   };
+  const handleStartMeeting = async (e) => {
+    e.preventDefault();
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Token " + localStorage.getItem("token"),
+      },
+    };
+    const epochStartTime = new Date().getTime();
+    const epochEndTime = epochStartTime + 1800000;
 
+    const body = JSON.stringify({
+      title: user?.username,
+      redirectURI: "https://c24vconf.accelx.net",
+      openingTime: {
+        startTS: epochStartTime,
+        endTS: epochEndTime,
+      },
+    });
+    if (!user?.id) {
+      router.push("/home/login");
+    } else {
+      if (videoToken) {
+        console.log(videoToken);
+        try {
+          const res = await axios.post(
+            `https://c24apidev.accelx.net/videocall/create_meeting/${videoToken}`,
+            body,
+            config
+          );
+          if (res.status === 200) {
+            const meetingId = JSON.parse(res.data).meetingId;
+            console.log(JSON.parse(res.data));
+            window.open(
+              `https://c24vconf.accelx.net/meeting/${meetingId}`,
+              "_blank"
+            );
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else {
+        console.log("can not find token");
+      }
+    }
+  };
   return (
     <>
       <div id="about" className={`container ${cls.font}`}>
@@ -453,7 +520,10 @@ const ProviderPage = () => {
                   </div>
                   <div className="col-lg-4 col-md-4 col-12">
                     <div>
-                      <button className="btn btn-outline-info w-100 float-bottom">
+                      <button
+                        className="btn btn-outline-info w-100 float-bottom"
+                        onClick={() => setVideoModal(true)}
+                      >
                         <span className="pe-2">
                           <FiVideo />
                         </span>
@@ -1346,6 +1416,28 @@ const ProviderPage = () => {
               Yes
             </button>
           </div>
+        </Modal>
+        <Modal
+          classNames={{ modal: `${classes.customModal}` }}
+          open={videoModal}
+          onClose={() => setVideoModal(false)}
+        >
+          <h4 className={cls.font}>Video Call</h4>
+          <form>
+            <div className="my-3">
+              <label htmlFor="">Start time</label>
+              <input type="datetime-local" className={cls.businessInput} />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="">End time</label>
+              <input type="datetime-local" className={cls.businessInput} />
+            </div>
+            <div className="text-center">
+              <button className="btn btn-info" onClick={handleStartMeeting}>
+                Start meeting
+              </button>
+            </div>
+          </form>
         </Modal>
       </div>
     </>

@@ -11,18 +11,16 @@ const BusinessAccount = () => {
   const data = router.query;
   console.log(data);
   const onSubmit = (values) => {
-    router.push(
-      {
-        pathname: "/providerAccount/aboutBusiness",
-        query: {
-          ...values,
-          ...data,
-        },
+    router.push({
+      pathname: "/providerAccount/aboutBusiness",
+      query: {
+        ...values,
+        ...data,
       },
-      "/providerAccount/aboutBusiness"
-    );
+    });
   };
   const initialValues = {
+    email: user?.email ? user?.email : "",
     phone: "",
     termsOfService: false,
   };
@@ -67,9 +65,9 @@ const BusinessAccount = () => {
                     <div className="row">
                       <div className="col-md-6 col-lg-6 mb-2">
                         <Field
-                          type="text"
+                          type="email"
                           className="form-control"
-                          value={user.email}
+                          name="email"
                           disabled
                         />
                       </div>
@@ -100,7 +98,7 @@ const BusinessAccount = () => {
                         className={`form-check-label ${cls.font}`}
                         htmlFor="flexCheckDefault"
                       >
-                        Default checkbox
+                        I agree
                       </label>
                       <ErrorMessage name="termsOfService">
                         {(errMsg) => (

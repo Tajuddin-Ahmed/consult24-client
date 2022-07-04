@@ -16,6 +16,7 @@ import { createUser, loginToUser } from "../../components/hooks/createAndLogin";
 const ProviderSignUp = () => {
   const [error, setError] = useState("");
   const router = useRouter();
+  console.log(router.query.from);
   // form validation
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
@@ -47,7 +48,7 @@ const ProviderSignUp = () => {
           const token = await loginToUser(data.email, data.password);
           console.log(token);
           if (token) {
-            window.location.href = "/providerAccount/bookNewJob";
+            router.push(`${router.query.from}`);
           }
         }
       } catch (error) {
@@ -190,7 +191,12 @@ const ProviderSignUp = () => {
                 <div className="text-center my-3">
                   <p className={classes.font}>
                     Already have an account ?
-                    <Link href="/providerAccount/providerSignIn">
+                    <Link
+                      href={{
+                        pathname: "/providerAccount/providerSignIn",
+                        query: { to: `${router.query.from}` },
+                      }}
+                    >
                       <a style={{ color: "orange" }}>Log in</a>
                     </Link>
                   </p>

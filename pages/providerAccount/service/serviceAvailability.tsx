@@ -83,15 +83,12 @@ const ServiceAvailability = () => {
       );
       if (res.status === 201) {
         notify("Your appointment has been created successfully");
-        // router.push(
-        //   {
-        //     pathname: "/providerAccount/serviceImage",
-        //     query: {
-        //       serviceId: res.data.id,
-        //     },
-        //   },
-        //   "/providerAccount/service/serviceImage"
-        // );
+        router.push(
+          {
+            pathname: "/providerAccount/addService",
+          },
+          "/providerAccount/service/addService"
+        );
       }
     } catch (error) {
       notify1(error.message);

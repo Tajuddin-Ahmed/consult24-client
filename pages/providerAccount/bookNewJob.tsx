@@ -4,18 +4,19 @@ import { GrLocation } from "react-icons/gr";
 import cls from "../providerAccount/provider.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { AppContext } from "../../components/_App/Navbar/Navigation";
+import { useContext, useEffect, useState } from "react";
+import { getUser } from "../../components/hooks/createAndLogin";
 const BookNewJob = () => {
   const router = useRouter();
-  const onSubmit = (values) => {
-    router.push(
-      {
-        pathname: "/providerAccount/selectJob",
-        query: {
-          ...values,
-        },
+  const onSubmit = async (values) => {
+    router.push({
+      pathname: "/providerAccount/selectJob",
+      query: {
+        ...values,
       },
-      "/providerAccount/selectJob"
-    );
+    });
   };
   const initialValues = {
     serviceName: "",

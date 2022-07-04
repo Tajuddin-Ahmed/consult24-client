@@ -47,16 +47,13 @@ const AdditionalInfo = () => {
     { key: "24", value: "24" },
   ];
   const onSubmit = (values) => {
-    router.push(
-      {
-        pathname: "/providerAccount/proPayMethod",
-        query: {
-          ...values,
-          ...data,
-        },
+    router.push({
+      pathname: "/providerAccount/proPayMethod",
+      query: {
+        ...values,
+        ...data,
       },
-      "/providerAccount/proPayMethod"
-    );
+    });
   };
   const initialValues = {
     experienceLevel: "",

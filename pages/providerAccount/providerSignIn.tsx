@@ -48,7 +48,8 @@ const ProviderSignIn = () => {
         RemoveCookie("usrin");
         SetCookie("usrin", JSON.stringify(data));
       }
-      window.location.href = "/providerAccount/bookNewJob";
+      // router.push(`${router.query.to}`);
+      window.location.replace(`${router.query.to}`);
     } else {
       setError("Credentials error");
     }

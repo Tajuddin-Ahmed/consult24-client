@@ -7,16 +7,12 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import Menu from "./Menu/Menu";
 import { FaAngleDown, FaUser, FaUserTie } from "react-icons/fa";
 import classes from "../../../pages/users/profile.module.css";
 import { continueWithGoogle, userLogout } from "../../hooks/createAndLogin";
-import queryString from "query-string";
-import BookNewJob from "../../../pages/providerAccount/bookNewJob";
 import axios from "axios";
-import { BeatLoader } from "react-spinners";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+
 // import RemoveCookie from "../../hooks/removeCookie";
 // import { useSession, signIn, signOut } from "next-auth/react";
 
@@ -34,6 +30,10 @@ export const AppContext = createContext({});
 const Navigation = () => {
   const [loading, setLoading] = useState(false);
   const [isProvider, setIsprovider] = useState(false);
+  const [displayAuth, setDisplayAuth] = useState(false);
+  const [displayMiniAuth, setDisplayMiniAuth] = useState(false);
+  const [sticky, setSticky] = useState(false);
+  const [token, setToken] = useState(null);
   const router = useRouter();
   const code = router.query.code;
   const state = router.query.state;
@@ -74,19 +74,15 @@ const Navigation = () => {
     };
   }
 
-  let prorand;
-  if (typeof window !== "undefined") {
-    prorand = localStorage.getItem("prorand");
-  } else {
-    console.log("You are on the server");
-  }
   useEffect(() => {
-    setTimeout(() => setLoading(true), 1000);
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1000);
     if (state && code) {
       console.log(code, state);
       continueWithGoogle(state, code);
     }
-
+    const authToken = localStorage.getItem("token");
+    setToken(authToken);
     const checkIsProvider = async () => {
       const config = {
         headers: {
@@ -109,10 +105,7 @@ const Navigation = () => {
       }
     };
     checkIsProvider();
-  }, [user?.id]);
-  const [displayAuth, setDisplayAuth] = useState(false);
-  const [displayMiniAuth, setDisplayMiniAuth] = useState(false);
-  const [sticky, setSticky] = useState(false);
+  }, [user?.id, token]);
 
   //sticky menu
   const showStickyMenu = () => {
@@ -126,10 +119,6 @@ const Navigation = () => {
     // browser code
     window.addEventListener("scroll", showStickyMenu);
   }
-
-  const toggleAuth = () => {
-    setDisplayAuth(!displayAuth);
-  };
 
   const toggleMiniAuth = () => {
     setDisplayMiniAuth(!displayMiniAuth);
@@ -147,7 +136,7 @@ const Navigation = () => {
     return () => {
       abortController.abort();
     };
-  }, []);
+  }, [token]);
 
   return (
     <>
@@ -172,8 +161,8 @@ const Navigation = () => {
                       )}
                     </div>
                     <div className="logo">
-                      <Link href="/index-2">
-                        <a style={{ color: "#30EDED" }}>
+                      <Link href="/">
+                        <a style={{ color: "#28bdbf" }}>
                           <h1>Consult24</h1>
                         </a>
                       </Link>
@@ -183,7 +172,7 @@ const Navigation = () => {
               </div>
 
               <div className={showMenu ? "miran-nav show" : "miran-nav"}>
-                <div className="container-fluid">
+                <div className="container-fluid border-bottom">
                   <nav
                     className="navbar navbar-expand-md navbar-light"
                     style={{ minHeight: "83px" }}
@@ -640,7 +629,7 @@ const Navigation = () => {
                                       className="dropdown-menu dropdown-menu-light"
                                       style={{
                                         width: "300px",
-                                        marginLeft: "-149px",
+                                        marginLeft: "-130px",
                                         marginTop: "30px",
                                       }}
                                     >
@@ -852,8 +841,8 @@ const Navigation = () => {
             </div>
           </div>
         ) : (
-          <div className="row py-3 mx-2">
-            <div className=" col-md-6 col-lg-6 col-12 d-flex align-items-center">
+          <div className="row py-3 mx-2 border-bottom">
+            <div className="col-md-6 col-lg-6 col-12 d-flex align-items-center">
               <Link href="/">
                 <a>
                   <div
@@ -900,8 +889,7 @@ const Navigation = () => {
             <div className="col-md-6 col-lg-6 col-12 d-flex align-items-center justify-content-end">
               <div>
                 <Link href="/">
-                  <a className="text-primary text-decoration-underline default-btn pe-3">
-                    <FaUserTie />
+                  <a className="btn btn-outline-success rounded-pill px-3 mx-3">
                     <span className={classes.font}>Join as Customer </span>
                   </a>
                 </Link>

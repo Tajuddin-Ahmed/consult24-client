@@ -16,16 +16,13 @@ const ProviderPaymentMethod = () => {
     { key: "Paypal", value: "paypal" },
   ];
   const onSubmit = (values) => {
-    router.push(
-      {
-        pathname: "/providerAccount/addProfilePhoto",
-        query: {
-          ...values,
-          ...data,
-        },
+    router.push({
+      pathname: "/providerAccount/addProfilePhoto",
+      query: {
+        ...values,
+        ...data,
       },
-      "/providerAccount/addProfilePhoto"
-    );
+    });
   };
   const initialValues = { paymentTo: "", paymentFrom: "" };
   const validationSchema = Yup.object({

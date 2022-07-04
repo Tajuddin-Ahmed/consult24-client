@@ -14,7 +14,6 @@ const SelectJob = () => {
   const user: any = useContext(AppContext);
   const router = useRouter();
   const data = router.query;
-  console.log(data);
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
     setIsChecked(true);
@@ -45,19 +44,21 @@ const SelectJob = () => {
     { key: "Valet Parking", value: "Valet Parking" },
   ];
   const onSubmit = (values) => {
-    if (user.username) {
-      router.push(
-        {
-          pathname: "/providerAccount/businessAccount",
-          query: {
-            ...values,
-            ...data,
-          },
+    if (user?.username) {
+      router.push({
+        pathname: "/providerAccount/businessAccount",
+        query: {
+          ...values,
+          ...data,
         },
-        "/providerAccount/businessAccount"
-      );
+      });
     } else {
-      router.push("/providerAccount/providerSignUp");
+      router.push({
+        pathname: "/providerAccount/providerSignUp",
+        query: {
+          from: window.location.pathname + window.location.search,
+        },
+      });
     }
   };
   const initialValues = {

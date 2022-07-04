@@ -15,16 +15,13 @@ const WinningProfile = () => {
   const data = router.query;
   console.log(data);
   const onSubmit = (values) => {
-    router.push(
-      {
-        pathname: "/providerAccount/businessMore",
-        query: {
-          ...values,
-          ...data,
-        },
+    router.push({
+      pathname: "/providerAccount/businessMore",
+      query: {
+        ...values,
+        ...data,
       },
-      "/providerAccount/businessMore"
-    );
+    });
   };
   const initialValues = {
     companyName: "",

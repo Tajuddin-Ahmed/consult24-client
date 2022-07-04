@@ -42,6 +42,7 @@ const ProviderProfile = () => {
   const [customers, setCustomers] = useState([]);
   const [image, setImage] = useState();
   const user: any = useContext(AppContext);
+  console.log(user?.role, user?.id);
   const loaderCss = css`
     margin-left: 45%;
     margin-right: 45%;
@@ -114,7 +115,7 @@ const ProviderProfile = () => {
       if (user?.id) {
         try {
           const res = await axios.get(
-            "https://c24apidev.accelx.net/auth_api/service_provider_view_customer_list/",
+            `https://c24apidev.accelx.net/auth_api/service_provider_view_customer_list/provider_id=${user?.id}`,
             config
           );
           if (res.status === 200) {

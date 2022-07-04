@@ -15,16 +15,13 @@ const AboutYourself = () => {
   const data = router.query;
   console.log(data);
   const onSubmit = (values) => {
-    router.push(
-      {
-        pathname: "/providerAccount/additionalInfo",
-        query: {
-          ...values,
-          ...data,
-        },
+    router.push({
+      pathname: "/providerAccount/additionalInfo",
+      query: {
+        ...values,
+        ...data,
       },
-      "/providerAccount/additionalInfo"
-    );
+    });
   };
   const budgetOptions = [
     { key: "I don't currently spend on online marketing", value: "No" },

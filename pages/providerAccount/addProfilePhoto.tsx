@@ -38,15 +38,12 @@ const AddProfilePhoto = () => {
         config
       );
       if (res.status === 201) {
-        router.push(
-          {
-            pathname: "/providerAccount/keepHuman",
-            query: {
-              ...data,
-            },
+        router.push({
+          pathname: "/providerAccount/keepHuman",
+          query: {
+            ...data,
           },
-          "/providerAccount/keepHuman"
-        );
+        });
       }
     } catch (error) {
       console.log(error.message);

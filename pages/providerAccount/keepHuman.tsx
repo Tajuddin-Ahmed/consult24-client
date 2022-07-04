@@ -33,6 +33,24 @@ const KeepHuman = () => {
         Authorization: "Token " + localStorage.getItem("token"),
       },
     };
+    const userData = JSON.stringify({
+      role: 3,
+    });
+    let role = 3;
+    if (user?.role === 2) {
+      try {
+        const res = await axios.patch(
+          "https://c24apidev.accelx.net/auth/users/me/",
+          userData,
+          config
+        );
+        if (res.status === 200) {
+          role = res.data.role;
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
     const body = JSON.stringify({
       first_name: values.firstName,
       middle_name: values.middleName,
@@ -65,26 +83,25 @@ const KeepHuman = () => {
       state: values.providerState,
       country: values.country,
     });
-    try {
-      const res = await axios.put(
-        `https://c24apidev.accelx.net/auth_api/provider_profile/${user.id}`,
-        body,
-        config
-      );
-      console.log(res);
-      if (res.status === 200) {
-        router.push(
-          {
-            pathname: "/providerAccount/providerProfile",
-            query: {
-              isComplete: "completed",
-            },
-          },
-          "/providerAccount/providerProfile"
+    if (role === 3) {
+      try {
+        const res = await axios.put(
+          `https://c24apidev.accelx.net/auth_api/provider_profile/${user.id}`,
+          body,
+          config
         );
+        console.log(res);
+        if (res.status === 200) {
+          router.push(
+            {
+              pathname: "/providerAccount/providerProfile",
+            },
+            "/providerAccount/providerProfile"
+          );
+        }
+      } catch (error) {
+        console.log(error.message);
       }
-    } catch (error) {
-      console.log(error.message);
     }
     // End Provider update api
   };

@@ -14,16 +14,13 @@ const BusinessMore = () => {
   const data = router.query;
   console.log(data);
   const onSubmit = (values) => {
-    router.push(
-      {
-        pathname: "/providerAccount/aboutYourself",
-        query: {
-          ...values,
-          ...data,
-        },
+    router.push({
+      pathname: "/providerAccount/aboutYourself",
+      query: {
+        ...values,
+        ...data,
       },
-      "/providerAccount/aboutYourself"
-    );
+    });
   };
   const initialValues = {
     companyName: data.companyName,
@@ -42,6 +39,7 @@ const BusinessMore = () => {
   });
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}

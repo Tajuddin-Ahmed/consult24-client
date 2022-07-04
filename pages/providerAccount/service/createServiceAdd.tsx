@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { IoMdArrowBack } from "react-icons/io";
-import cls from "./provider.module.css";
+import cls from "../provider.module.css";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";

@@ -20,7 +20,6 @@ export async function createUser(
     },
   });
   const data = await response.json();
-  console.log(data);
   if (!response.ok) {
     throw new Error(data.message || "Something went wrong");
   }
@@ -145,11 +144,37 @@ export const createVideoAccount = async (
       body,
       config
     );
-    if (res.status === 201) {
-      console.log(res.data);
-      return res.data;
+    if (res.status === 200) {
+      const videoToken = JSON.parse(res.data[0]).secretKey;
+      return videoToken;
     }
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+export const storeSecretKey = async (token, id, videoToken) => {
+  if (token) {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Token " + token,
+      },
+    };
+    const body = JSON.stringify({
+      token_store: videoToken,
+      user_video_call_account: id,
+    });
+    try {
+      const res = await axios.post(
+        "https://c24apidev.accelx.net/api/VideoCallingTokenListCreateAPIView/",
+        body,
+        config
+      );
+      if (res.status === 201) {
+        console.log(res.data);
+        return res.data;
+      }
+    } catch (error) {}
   }
 };

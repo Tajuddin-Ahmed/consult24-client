@@ -18,13 +18,13 @@ import { SessionProvider } from "next-auth/react";
 import Modal from "react-modal";
 Modal.setAppElement("#__next");
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
-  const [a, setA] = useState();
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({});
+  const [loading, setLoading]: any = useState(true);
+  const [user, setUser]: any = useState({});
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
-      const token = localStorage.getItem("token");
+      const token: any = localStorage.getItem("token");
       if (token === "undefined" || token === "null") {
         return;
       } else {

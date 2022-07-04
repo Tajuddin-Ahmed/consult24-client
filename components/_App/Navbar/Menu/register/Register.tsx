@@ -13,6 +13,7 @@ import {
   createUser,
   createVideoAccount,
   loginToUser,
+  storeSecretKey,
 } from "../../../../hooks/createAndLogin";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ToastContainer, toast } from "react-toastify";
@@ -64,19 +65,23 @@ const RegisterPage = () => {
           data.password,
           data.confirmPassword
         );
-        console.log(result);
-        const videoToken = createVideoAccount(
+        const videoToken = await createVideoAccount(
           data.email,
           ["https://c24vconf.accelx.net"],
           "https://c24vconf.accelx.net"
         );
-        console.log(videoToken);
+
         if (result) {
           const token = await loginToUser(data.email, data.password);
-          console.log(token);
-          if (token) {
+          if (token && videoToken) {
+            const storedKey = await storeSecretKey(
+              token,
+              result.id,
+              videoToken
+            );
+            console.log(storedKey);
             notify1("Account created successfully");
-            // window.location.href = "/";
+            window.location.href = "/";
           }
         }
       } catch (error) {
